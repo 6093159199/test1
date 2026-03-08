@@ -7,8 +7,20 @@
     <title>Fumiko Poko - Official ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind = { theme: { extend: { fontFamily: { thai: ['Mitr', 'sans-serif'] } } } }
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 5s ease-in-out infinite',
+                        'blink': 'blink 1.6s ease-in-out infinite',
+                        'slideUp': 'slideUp 0.55s ease both',
+                        'spin-slow': 'spin 3s linear infinite',
+                    }
+                }
+            }
+        }
     </script>
     <style>
         :root {
@@ -20,21 +32,22 @@
             --accent: #FF71CF;
             --card-bg: rgba(25, 25, 70, 0.45);
             --text-main: #FFFFFF;
-            --text-soft: #E0E0E0;
-            --text-light: #B0B0B0;
+            --text-soft: rgba(255, 255, 255, 0.8);
+            --text-light: rgba(255, 255, 255, 0.6);
+            --font-main: 'Mitr', sans-serif;
             --status-from: #B8E8B0;
             --status-to: #78CC72;
-            --do-bg: #F0FAF0;
-            --do-border: #B8E6B0;
-            --dont-bg: #FFF2F2;
-            --dont-border: #FFBCBC;
+            --do-bg: rgba(76, 175, 80, 0.15);
+            --do-border: #4CAF50;
+            --dont-bg: rgba(244, 67, 54, 0.15);
+            --dont-border: #F44336;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Mitr', sans-serif;
+            font-family: var(--font-main);
         }
 
         body {
@@ -44,6 +57,17 @@
             color: #fff;
             overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 20%, rgba(187, 134, 252, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(255, 113, 207, 0.15) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .bg-emojis {
@@ -65,8 +89,42 @@
         }
 
         @keyframes float-bg {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(360deg); }
+            0% {
+                transform: translateY(110vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.25; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-spin {
+            animation: spin 1s linear infinite;
         }
 
         .container {
@@ -127,8 +185,8 @@
         }
 
         @keyframes pulse-glow {
-            from { transform: scale(0.95); opacity: 0.3; }
-            to { transform: scale(1.05); opacity: 0.5; }
+            from { transform: scale(0.95); }
+            to { transform: scale(1.05); }
         }
 
         .section {
@@ -139,12 +197,13 @@
             margin-bottom: 40px;
             border: 2px solid var(--main);
             box-shadow: 0 0 15px var(--glow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: slideUp 0.55s ease both;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px var(--glow);
         }
 
         h2 {
@@ -159,8 +218,10 @@
         h2::after {
             content: '';
             flex: 1;
-            height: 2px;
+            height: 1.5px;
             background: linear-gradient(to right, var(--main), transparent);
+            opacity: 0.45;
+            border-radius: 2px;
         }
 
         .badge-group {
@@ -202,6 +263,11 @@
             margin-top: 30px;
         }
 
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--glow);
+        }
+
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -217,13 +283,12 @@
             text-align: center;
             text-decoration: none;
             color: #fff;
-            transition: 0.3s;
+            transition: transform 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-3px);
+            transform: scale(1.03);
             border-color: var(--main);
-            box-shadow: 0 5px 15px var(--glow);
         }
 
         .card img {
@@ -255,330 +320,145 @@
         }
 
         .social-btn {
-            padding: 5px 12px;
-            border-radius: 15px;
+            padding: 8px 16px;
+            border-radius: 25px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--main);
             color: #fff;
             text-decoration: none;
-            font-size: 10.5px;
-            transition: 0.3s;
+            font-size: 12px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .social-btn:hover {
             background: var(--main);
+            color: var(--bg);
             transform: translateY(-2px);
         }
 
+        /* Status badge */
         .status-badge {
             display: inline-flex;
             align-items: center;
             gap: 7px;
             background: linear-gradient(135deg, var(--status-from), var(--status-to));
-            color: #1a3a1a;
+            color: #1a4d1a;
             font-size: 0.8rem;
             font-weight: 500;
             padding: 7px 18px;
             border-radius: 20px;
             box-shadow: 0 3px 12px rgba(100, 190, 95, 0.28);
-            margin-top: 10px;
         }
 
         .status-dot {
             width: 7px;
             height: 7px;
-            background: #1a3a1a;
+            background: white;
             border-radius: 50%;
             animation: blink 1.6s ease-in-out infinite;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.25; }
-        }
-
-        .price-card {
-            background: rgba(255, 255, 255, 0.1);
+        /* Group items */
+        .group-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(187, 134, 252, 0.3);
             border-radius: 18px;
             padding: 15px;
-            text-align: center;
-            border: 1px solid var(--main);
+            transition: transform 0.2s;
         }
 
-        .price-amount {
-            font-size: 2rem;
+        .group-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--main);
+        }
+
+        .gi-price {
+            background: linear-gradient(135deg, var(--main), var(--accent));
+            color: white;
+            font-size: 1rem;
             font-weight: 600;
-            color: var(--main);
-            line-height: 1.2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(187, 134, 252, 0.3);
         }
 
-        .do-dont-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .do-box {
-            background: var(--do-bg);
-            border: 1.5px solid var(--do-border);
-            border-radius: 16px;
-            padding: 14px;
-            color: #1a3a1a;
-        }
-
-        .dont-box {
-            background: var(--dont-bg);
-            border: 1.5px solid var(--dont-border);
-            border-radius: 16px;
-            padding: 14px;
-            color: #8b3a3a;
-        }
-
-        .step-num {
-            width: 32px;
-            height: 32px;
-            background: var(--main);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #0B0B2A;
-            flex-shrink: 0;
-        }
-
-        .tl-item {
-            border-radius: 14px;
-            padding: 12px 10px;
-            text-align: center;
-        }
-
-        .tl-item.fast {
-            background: rgba(184, 232, 176, 0.2);
-            border: 1.5px solid #B8E6B0;
-        }
-
-        .tl-item.mid {
-            background: rgba(187, 134, 252, 0.2);
-            border: 1.5px solid var(--main);
-        }
-
-        .tl-item.slow {
-            background: rgba(255, 192, 160, 0.2);
-            border: 1.5px solid #FFBCBC;
-        }
-
-        .pay-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--main);
+        .gi-tag {
+            background: rgba(187, 134, 252, 0.1);
+            border: 1px solid rgba(187, 134, 252, 0.3);
             border-radius: 12px;
-            padding: 9px 14px;
-            font-size: 0.83rem;
+            padding: 3px 10px;
+            font-size: 0.75rem;
             color: var(--text-soft);
         }
 
-        /* Admin Panel Styles */
+        .gi-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(187, 134, 252, 0.4);
+            border-radius: 15px;
+            padding: 5px 12px;
+            font-size: 0.76rem;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .gi-link:hover {
+            background: var(--main);
+            color: var(--bg);
+            border-color: var(--main);
+        }
+
+        .see-all-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--main), var(--accent));
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 16px var(--glow);
+            transition: all 0.25s;
+        }
+
+        .see-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px var(--glow);
+        }
+
+        /* Admin Panel */
         #admin-fab {
             position: fixed;
             bottom: 24px;
             right: 24px;
+            z-index: 9999;
             width: 56px;
             height: 56px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--main), var(--accent));
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 22px;
             cursor: pointer;
             box-shadow: 0 4px 20px var(--glow);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.3s;
-            z-index: 9999;
+            transition: all 0.3s;
         }
 
         #admin-fab:hover {
             transform: scale(1.1) rotate(90deg);
-        }
-
-        #admin-overlay, #login-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        #admin-overlay.show, #login-overlay.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #admin-panel {
-            background: #1a1a2e;
-            border-radius: 22px;
-            padding: 28px;
-            width: 100%;
-            max-width: 1000px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            border: 2px solid var(--main);
-            box-shadow: 0 0 30px var(--glow);
-        }
-
-        .admin-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(187, 134, 252, 0.3);
-        }
-
-        .admin-input {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1.5px solid #333;
-            border-radius: 10px;
-            font-family: 'Mitr', sans-serif;
-            font-size: 0.88rem;
-            outline: none;
-            transition: 0.2s;
-            background: #2a2a3a;
-            color: white;
-        }
-
-        .admin-input:focus {
-            border-color: var(--main);
-        }
-
-        .admin-btn-save {
-            background: linear-gradient(135deg, var(--main), var(--accent));
-            color: white;
-            border: none;
-            padding: 11px 22px;
-            border-radius: 30px;
-            font-family: 'Mitr', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
-        .admin-btn-save:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px var(--glow);
-        }
-
-        .admin-btn-add {
-            background: #2a2a3a;
-            color: var(--main);
-            border: 1px solid var(--main);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-family: 'Mitr', sans-serif;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: 0.2s;
-        }
-
-        .admin-btn-add:hover {
-            background: var(--main);
-            color: #0B0B2A;
-        }
-
-        .admin-btn-del {
-            background: #ffebee;
-            color: #f44336;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-family: 'Mitr', sans-serif;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .tab-btn {
-            padding: 9px 18px;
-            border: 1.5px solid #333;
-            background: #1a1a2e;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: 'Mitr', sans-serif;
-            font-size: 0.85rem;
-            color: #fff;
-            transition: 0.2s;
-        }
-
-        .tab-btn.active {
-            background: var(--main);
-            color: #0B0B2A;
-            border-color: var(--main);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .item-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-
-        .item-row .admin-input {
-            flex: 1;
-        }
-
-        .color-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .color-row label {
-            min-width: 120px;
-            color: #fff;
-        }
-
-        .color-input-wrap {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .color-swatch {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 2px solid #444;
-            cursor: pointer;
-        }
-
-        .color-text {
-            width: 100px;
-            padding: 6px 10px;
-            border: 1.5px solid #333;
-            border-radius: 8px;
-            background: #2a2a3a;
-            color: white;
         }
 
         #toast {
@@ -593,6 +473,7 @@
             display: none;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         #toast.show {
@@ -600,14 +481,21 @@
             animation: slideIn 0.3s ease;
         }
 
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         #toast.success { background: #4CAF50; }
         #toast.error { background: #f44336; }
         #toast.info { background: #2196F3; }
-
-        @keyframes slideIn {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
+        #toast.warning { background: #FF9800; }
 
         #loading-overlay {
             position: fixed;
@@ -628,7 +516,7 @@
         .loading-bar-wrap {
             width: 200px;
             height: 4px;
-            background: #2a2a3a;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
             overflow: hidden;
         }
@@ -636,6 +524,7 @@
         .loading-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--main), var(--accent));
+            border-radius: 4px;
             animation: loadBar 1.5s ease-in-out infinite;
         }
 
@@ -643,6 +532,171 @@
             0% { width: 0%; margin-left: 0; }
             50% { width: 60%; margin-left: 20%; }
             100% { width: 0%; margin-left: 100%; }
+        }
+
+        #login-overlay,
+        #admin-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        #login-overlay.show,
+        #admin-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #admin-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--main);
+            border-radius: 25px;
+            padding: 28px;
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            color: white;
+        }
+
+        .admin-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .admin-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid rgba(187, 134, 252, 0.3);
+            border-radius: 12px;
+            font-family: var(--font-main);
+            font-size: 0.88rem;
+            outline: none;
+            transition: border 0.2s;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .admin-input:focus {
+            border-color: var(--main);
+        }
+
+        .admin-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .admin-btn-save {
+            background: linear-gradient(135deg, var(--main), var(--accent));
+            color: white;
+            border: none;
+            padding: 11px 22px;
+            border-radius: 30px;
+            font-family: var(--font-main);
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .admin-btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--glow);
+        }
+
+        .admin-btn-add {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--main);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: var(--font-main);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .admin-btn-add:hover {
+            background: var(--main);
+            color: var(--bg);
+        }
+
+        .admin-btn-del {
+            background: rgba(244, 67, 54, 0.2);
+            color: #ff6b6b;
+            border: 1px solid #f44336;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: var(--font-main);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .admin-btn-del:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        .tab-btn {
+            padding: 9px 18px;
+            border: 1.5px solid rgba(187, 134, 252, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-size: 0.85rem;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--main), var(--accent));
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .item-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .item-row .admin-input {
+            margin-bottom: 0;
+            flex: 1;
+        }
+
+        .badge-global {
+            background: rgba(33, 150, 243, 0.2);
+            color: #90caf9;
+            border: 1px solid #2196F3;
+        }
+
+        .badge-assigned {
+            background: rgba(187, 134, 252, 0.2);
+            color: var(--main);
+            border: 1px solid var(--main);
         }
 
         .cmodal-overlay {
@@ -662,34 +716,37 @@
         }
 
         .cmodal-box {
-            background: #1a1a2e;
-            border-radius: 22px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--main);
+            border-radius: 25px;
             padding: 36px 32px;
             max-width: 420px;
             width: 100%;
             text-align: center;
-            border: 2px solid var(--main);
-            box-shadow: 0 0 30px var(--glow);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+            color: white;
         }
 
         .cmodal-btn {
             padding: 11px 24px;
             border-radius: 30px;
-            font-family: 'Mitr', sans-serif;
+            font-family: var(--font-main);
             font-size: 0.9rem;
+            font-weight: 500;
             border: none;
             cursor: pointer;
-            transition: 0.2s;
-            margin: 0 5px;
+            transition: all 0.2s;
         }
 
         .cmodal-btn-confirm {
-            background: var(--main);
-            color: #0B0B2A;
+            background: linear-gradient(135deg, var(--main), var(--accent));
+            color: white;
         }
 
         .cmodal-btn-cancel {
-            background: #2a2a3a;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
         }
 
@@ -698,26 +755,150 @@
             color: white;
         }
 
+        .color-section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark);
+            padding: 8px 0 6px;
+            border-bottom: 1.5px solid rgba(187, 134, 252, 0.3);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .color-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-row label {
+            font-size: 0.82rem;
+            color: var(--text-soft);
+            min-width: 120px;
+        }
+
+        .color-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid rgba(187, 134, 252, 0.3);
+            cursor: pointer;
+            flex-shrink: 0;
+            background: transparent;
+        }
+
+        .color-text {
+            width: 100px;
+            padding: 6px 10px;
+            border: 1.5px solid rgba(187, 134, 252, 0.3);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-family: monospace;
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .color-text:focus {
+            border-color: var(--main);
+        }
+
+        .font-option {
+            border: 2px solid rgba(187, 134, 252, 0.3);
+            border-radius: 14px;
+            padding: 14px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .font-option:hover {
+            border-color: var(--main);
+        }
+
+        .font-option.selected {
+            border-color: var(--main);
+            background: rgba(187, 134, 252, 0.2);
+            box-shadow: 0 3px 12px var(--glow);
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+        }
+
+        .history-item:hover {
+            border-color: var(--main);
+            transform: translateX(5px);
+        }
+
+        .gs-ok {
+            background: rgba(76, 175, 80, 0.2);
+            color: #81c784;
+        }
+
+        .gs-err {
+            background: rgba(244, 67, 54, 0.2);
+            color: #ff8a80;
+        }
+
+        .gs-loading {
+            background: rgba(33, 150, 243, 0.2);
+            color: #90caf9;
+        }
+
         @media(max-width:500px) {
-            .do-dont-grid {
-                grid-template-columns: 1fr;
+            .container {
+                padding: 10px 10px 40px;
             }
-            #admin-panel {
-                padding: 16px;
+            
+            .section {
+                padding: 20px 15px;
             }
+            
+            .grid {
+                gap: 10px;
+            }
+            
             .contact-btns.cols-2,
             .contact-btns.cols-3 {
                 grid-template-columns: 1fr;
+            }
+            
+            #admin-panel {
+                padding: 16px;
             }
         }
     </style>
 </head>
 
 <body>
+
     <!-- Loading -->
     <div id="loading-overlay">
-        <div style="font-size:3rem; animation: pulse-glow 2s infinite;">✨</div>
-        <div style="color: var(--white);">กำลังโหลดข้อมูล...</div>
+        <div style="font-size:3rem;animation:float 2s ease-in-out infinite;">✨</div>
+        <div style="font-size:1rem;color:var(--text-soft);">กำลังโหลดข้อมูล...</div>
         <div class="loading-bar-wrap">
             <div class="loading-bar"></div>
         </div>
@@ -730,7 +911,7 @@
     <div class="container" id="main-content"></div>
 
     <!-- Admin FAB -->
-    <button id="admin-fab" title="จัดการร้านค้า">
+    <button id="admin-fab" title="Admin Panel">
         <i class="fas fa-cog"></i>
     </button>
 
@@ -740,23 +921,23 @@
     <!-- Custom Modal -->
     <div id="cmodal" class="cmodal-overlay">
         <div class="cmodal-box">
-            <div id="cmodal-icon" style="font-size:3rem; margin-bottom:14px;"></div>
-            <div id="cmodal-title" style="font-size:1.2rem; font-weight:600; color: var(--white); margin-bottom:8px;"></div>
-            <div id="cmodal-text" style="font-size:0.88rem; color: var(--text-soft); margin-bottom:20px;"></div>
-            <div id="cmodal-actions" style="display:flex; gap:10px; justify-content:center;"></div>
+            <div id="cmodal-icon" style="font-size:3rem;margin-bottom:14px;"></div>
+            <div id="cmodal-title" style="font-size:1.2rem;font-weight:600;margin-bottom:8px;"></div>
+            <div id="cmodal-text" style="font-size:0.88rem;color:var(--text-soft);line-height:1.7;margin-bottom:20px;"></div>
+            <div id="cmodal-actions" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"></div>
         </div>
     </div>
 
-    <!-- Login Overlay -->
+    <!-- Login -->
     <div id="login-overlay">
-        <div style="background: #1a1a2e; border-radius:22px; padding:40px 32px; width:100%; max-width:360px; border:2px solid var(--main);">
-            <div style="text-align:center; margin-bottom:24px;">
-                <div style="font-size:2.5rem;">🔐</div>
-                <h2 style="color: var(--white);">เข้าสู่ระบบ</h2>
+        <div class="admin-section" style="max-width:360px;width:100%;">
+            <div style="text-align:center;margin-bottom:24px;">
+                <div style="font-size:2.5rem;margin-bottom:8px;">🔐</div>
+                <h2 style="color:var(--white);font-size:1.3rem;">เข้าสู่ระบบ</h2>
             </div>
             <input type="text" id="login-user" class="admin-input" placeholder="Username" style="margin-bottom:12px;">
             <input type="password" id="login-pass" class="admin-input" placeholder="Password" style="margin-bottom:16px;">
-            <div style="display:flex; gap:10px;">
+            <div style="display:flex;gap:10px;">
                 <button onclick="doLogin()" class="admin-btn-save" style="flex:1;">เข้าสู่ระบบ</button>
                 <button onclick="closeLogin()" class="admin-btn-add" style="flex:1;">ยกเลิก</button>
             </div>
@@ -766,51 +947,73 @@
     <!-- Admin Panel -->
     <div id="admin-overlay">
         <div id="admin-panel">
-            <button onclick="closeAdmin()" style="position:absolute; top:18px; right:18px; background:#2a2a3a; border:none; width:40px; height:40px; border-radius:50%; color:white; cursor:pointer;">
+            <button onclick="closeAdmin()" style="position:absolute;top:18px;right:18px;background:rgba(255,255,255,0.1);border:none;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:white;transition:all 0.2s;border:1px solid var(--main);"
+                onmouseover="this.style.background='#ff4444';this.style.color='white'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='white'">
                 <i class="fas fa-times"></i>
             </button>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
-                <h2 style="color: var(--white);"><i class="fas fa-sliders-h" style="color: var(--main);"></i> จัดการร้าน Fumiko Poko</h2>
-                <button onclick="adminLogout()" class="admin-btn-del" style="display:flex; align-items:center; gap:6px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+                <h2 style="color:var(--white);font-size:1.2rem;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-sliders-h" style="color:var(--main);"></i> จัดการร้าน Fumiko Poko
+                </h2>
+                <button onclick="adminLogout()" class="admin-btn-del" style="display:flex;align-items:center;gap:6px;">
                     <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
                 </button>
             </div>
 
             <!-- Export/Import -->
-            <div style="display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;">
-                <button onclick="exportData()" class="admin-btn-add"><i class="fas fa-download"></i> Export</button>
-                <button onclick="document.getElementById('import-file').click()" class="admin-btn-add"><i class="fas fa-upload"></i> Import</button>
-                <button onclick="syncWithGoogleSheets()" class="admin-btn-add"><i class="fas fa-sync-alt"></i> Sync Sheets</button>
-                <button onclick="loadFromGoogleSheets(true)" class="admin-btn-add"><i class="fas fa-cloud-download-alt"></i> โหลดจาก Sheets</button>
+            <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+                <button onclick="exportData()" class="admin-btn-add" style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button onclick="document.getElementById('import-file').click()" class="admin-btn-add" style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-upload"></i> Import
+                </button>
+                <button onclick="syncWithGoogleSheets()" class="admin-btn-add" style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-sync-alt"></i> Sync Sheets
+                </button>
+                <button onclick="loadFromGoogleSheets(true)" class="admin-btn-add" style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-cloud-download-alt"></i> โหลดจาก Sheets
+                </button>
+                <button onclick="showHistory()" class="admin-btn-add" style="display:flex;align-items:center;gap:6px;">
+                    <i class="fas fa-history"></i> History
+                </button>
             </div>
             <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
 
             <!-- Tabs -->
-            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; padding-bottom:14px; border-bottom:2px solid #333;">
-                <button class="tab-btn active" onclick="switchTab('tab-header', event)"><i class="fas fa-home"></i> ส่วนหัว</button>
-                <button class="tab-btn" onclick="switchTab('tab-colors', event)"><i class="fas fa-palette"></i> สี</button>
-                <button class="tab-btn" onclick="switchTab('tab-sections', event)"><i class="fas fa-layer-group"></i> ส่วนต่างๆ</button>
-                <button class="tab-btn" onclick="switchTab('tab-portfolio', event)"><i class="fas fa-images"></i> ผลงาน</button>
-                <button class="tab-btn" onclick="switchTab('tab-collab', event)"><i class="fas fa-handshake"></i> กลุ่มในเครือ</button>
-                <button class="tab-btn" onclick="switchTab('tab-contact', event)"><i class="fas fa-phone"></i> ติดต่อ</button>
-                <button class="tab-btn" onclick="switchTab('tab-footer', event)"><i class="fas fa-bookmark"></i> ส่วนท้าย</button>
-                <button class="tab-btn" onclick="switchTab('tab-bg-emojis', event)"><i class="fas fa-smile"></i> อิโมจิพื้นหลัง</button>
-                <button class="tab-btn" onclick="switchTab('tab-gs', event)"><i class="fab fa-google"></i> Google Sheets</button>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;border-bottom:2px solid rgba(187,134,252,0.3);padding-bottom:14px;">
+                <button class="tab-btn active" onclick="switchTab('tab-header',event)"><i class="fas fa-home"></i> ส่วนหัว</button>
+                <button class="tab-btn" onclick="switchTab('tab-background',event)"><i class="fas fa-cloud"></i> อิโมจิพื้นหลัง</button>
+                <button class="tab-btn" onclick="switchTab('tab-colors',event)"><i class="fas fa-palette"></i> สี</button>
+                <button class="tab-btn" onclick="switchTab('tab-font',event)"><i class="fas fa-font"></i> ฟอนต์</button>
+                <button class="tab-btn" onclick="switchTab('tab-sections',event)"><i class="fas fa-layer-group"></i> ส่วนต่างๆ</button>
+                <button class="tab-btn" onclick="switchTab('tab-groups-headers',event)"><i class="fas fa-heading"></i> หัวข้อกลุ่ม</button>
+                <button class="tab-btn" onclick="switchTab('tab-group-sections',event)"><i class="fas fa-list"></i> กลุ่มย่อย</button>
+                <button class="tab-btn" onclick="switchTab('tab-portfolio',event)"><i class="fas fa-images"></i> ผลงาน</button>
+                <button class="tab-btn" onclick="switchTab('tab-collab',event)"><i class="fas fa-handshake"></i> กลุ่มในเครือ</button>
+                <button class="tab-btn" onclick="switchTab('tab-contact',event)"><i class="fas fa-phone"></i> ติดต่อ</button>
+                <button class="tab-btn" onclick="switchTab('tab-footer',event)"><i class="fas fa-bookmark"></i> ส่วนท้าย</button>
+                <button class="tab-btn" onclick="switchTab('tab-gs',event)"><i class="fab fa-google"></i> Google Sheets</button>
             </div>
 
             <!-- Tab: Header -->
             <div id="tab-header" class="tab-content active">
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;"><i class="fas fa-image" style="color: var(--main);"></i> รูปโลโก้</h3>
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-image" style="color:var(--main);"></i> รูปโลโก้
+                    </h3>
                     <input type="text" id="a-logo-img" class="admin-input" placeholder="URL รูปโลโก้">
                 </div>
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;"><i class="fas fa-store" style="color: var(--main);"></i> ข้อมูลร้าน</h3>
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-star" style="color:var(--main);"></i> ข้อมูลร้าน
+                    </h3>
                     <input type="text" id="a-shop-name" class="admin-input" placeholder="ชื่อร้าน" style="margin-bottom:10px;">
-                    <textarea id="a-shop-desc" class="admin-input" placeholder="คำอธิบาย" rows="3" style="margin-bottom:10px;"></textarea>
-                    <input type="text" id="a-status-text" class="admin-input" placeholder="สถานะ (เช่น 🟢 พร้อมรับออเดอร์)">
-                    <div class="item-row">
+                    <textarea id="a-shop-desc" class="admin-input" placeholder="คำอธิบายใต้ชื่อ" rows="3" style="margin-bottom:10px;"></textarea>
+                    <input type="text" id="a-status-text" class="admin-input" placeholder="สถานะ (เช่น 🟢 Ready for orders)">
+                    <div class="item-row" style="margin-top:10px;">
                         <input type="text" id="a-badge1" class="admin-input" placeholder="ป้าย 1">
                         <input type="text" id="a-badge2" class="admin-input" placeholder="ป้าย 2">
                         <input type="text" id="a-badge3" class="admin-input" placeholder="ป้าย 3">
@@ -820,110 +1023,194 @@
                 <button onclick="saveHeader()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกส่วนหัว</button>
             </div>
 
+            <!-- Tab: Background Emojis -->
+            <div id="tab-background" class="tab-content">
+                <div class="admin-section">
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-cloud" style="color:var(--main);"></i> จัดการอิโมจิพื้นหลัง
+                    </h3>
+                    <div id="emojis-list"></div>
+                    <button class="admin-btn-add" onclick="addEmoji()" style="margin-top:10px;">
+                        <i class="fas fa-plus"></i> เพิ่มอิโมจิ
+                    </button>
+                </div>
+                <button onclick="saveEmojis()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกอิโมจิ</button>
+            </div>
+
             <!-- Tab: Colors -->
             <div id="tab-colors" class="tab-content">
                 <div class="admin-section">
+                    <div class="color-section-title"><i class="fas fa-palette" style="color:var(--main);"></i> สีหลัก</div>
+                    <div class="color-row">
+                        <label>สีพื้นหลังหลัก</label>
+                        <div class="color-input-wrap">
+                            <input type="color" id="color-bg" class="color-swatch" onchange="syncColorText('bg',this.value)">
+                            <input type="text" id="color-bg-text" class="color-text" value="#0B0B2A" oninput="syncColorPicker('bg',this.value)">
+                        </div>
+                    </div>
                     <div class="color-row">
                         <label>สีหลัก (Main)</label>
                         <div class="color-input-wrap">
-                            <input type="color" id="color-main" class="color-swatch" onchange="syncColorText('main', this.value)">
-                            <input type="text" id="color-main-text" class="color-text" oninput="syncColorPicker('main', this.value)">
+                            <input type="color" id="color-main" class="color-swatch" onchange="syncColorText('main',this.value)">
+                            <input type="text" id="color-main-text" class="color-text" value="#BB86FC" oninput="syncColorPicker('main',this.value)">
                         </div>
                     </div>
                     <div class="color-row">
-                        <label>สีพื้นหลัง (Bg)</label>
+                        <label>สีหลักเข้ม</label>
                         <div class="color-input-wrap">
-                            <input type="color" id="color-bg" class="color-swatch" onchange="syncColorText('bg', this.value)">
-                            <input type="text" id="color-bg-text" class="color-text" oninput="syncColorPicker('bg', this.value)">
-                        </div>
-                    </div>
-                    <div class="color-row">
-                        <label>สีข้อความหลัก</label>
-                        <div class="color-input-wrap">
-                            <input type="color" id="color-text-main" class="color-swatch" onchange="syncColorText('text-main', this.value)">
-                            <input type="text" id="color-text-main-text" class="color-text" oninput="syncColorPicker('text-main', this.value)">
+                            <input type="color" id="color-dark" class="color-swatch" onchange="syncColorText('dark',this.value)">
+                            <input type="text" id="color-dark-text" class="color-text" value="#C084FC" oninput="syncColorPicker('dark',this.value)">
                         </div>
                     </div>
                     <div class="color-row">
                         <label>สี Accent</label>
                         <div class="color-input-wrap">
-                            <input type="color" id="color-accent" class="color-swatch" onchange="syncColorText('accent', this.value)">
-                            <input type="text" id="color-accent-text" class="color-text" oninput="syncColorPicker('accent', this.value)">
+                            <input type="color" id="color-accent" class="color-swatch" onchange="syncColorText('accent',this.value)">
+                            <input type="text" id="color-accent-text" class="color-text" value="#FF71CF" oninput="syncColorPicker('accent',this.value)">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <label>สี Glow</label>
+                        <div class="color-input-wrap">
+                            <input type="color" id="color-glow" class="color-swatch" onchange="syncColorText('glow',this.value)">
+                            <input type="text" id="color-glow-text" class="color-text" value="rgba(187,134,252,0.5)" oninput="syncColorPicker('glow',this.value)">
                         </div>
                     </div>
                 </div>
-                <button onclick="saveColors()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกสี</button>
-                <button onclick="resetColors()" class="admin-btn-add" style="margin-left:10px;"><i class="fas fa-undo"></i> รีเซ็ต</button>
+                <div class="admin-section">
+                    <div class="color-section-title"><i class="fas fa-square" style="color:var(--main);"></i> พื้นหลังการ์ด</div>
+                    <div class="color-row">
+                        <label>พื้นหลังการ์ด</label>
+                        <div class="color-input-wrap">
+                            <input type="color" id="color-card-bg" class="color-swatch" onchange="syncColorText('card-bg',this.value)">
+                            <input type="text" id="color-card-bg-text" class="color-text" value="rgba(25,25,70,0.45)" oninput="syncColorPicker('card-bg',this.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-section">
+                    <div class="color-section-title"><i class="fas fa-circle" style="color:var(--main);"></i> สถานะ</div>
+                    <div class="color-row">
+                        <label>สถานะ (สีจาก)</label>
+                        <div class="color-input-wrap">
+                            <input type="color" id="color-status-from" class="color-swatch" onchange="syncColorText('status-from',this.value)">
+                            <input type="text" id="color-status-from-text" class="color-text" value="#B8E8B0" oninput="syncColorPicker('status-from',this.value)">
+                        </div>
+                    </div>
+                    <div class="color-row">
+                        <label>สถานะ (สีถึง)</label>
+                        <div class="color-input-wrap">
+                            <input type="color" id="color-status-to" class="color-swatch" onchange="syncColorText('status-to',this.value)">
+                            <input type="text" id="color-status-to-text" class="color-text" value="#78CC72" oninput="syncColorPicker('status-to',this.value)">
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button onclick="saveColors()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกสี</button>
+                    <button onclick="resetColors()" class="admin-btn-add" style="display:flex;align-items:center;gap:6px;">
+                        <i class="fas fa-undo"></i> รีเซ็ตสีเริ่มต้น
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab: Font -->
+            <div id="tab-font" class="tab-content">
+                <div class="admin-section">
+                    <h3 style="font-size:0.95rem;margin-bottom:8px;"><i class="fas fa-font" style="color:var(--main);"></i> เลือกฟอนต์ภาษาไทย</h3>
+                    <p style="font-size:0.82rem;color:var(--text-soft);margin-bottom:14px;">คลิกเพื่อเลือก</p>
+                    <div id="font-grid-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:16px;"></div>
+                    <button onclick="saveFont()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกฟอนต์</button>
+                </div>
             </div>
 
             <!-- Tab: Sections -->
             <div id="tab-sections" class="tab-content">
                 <div id="sections-list"></div>
-                <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;">
-                    <button class="admin-btn-add" onclick="addSection('about')"><i class="fas fa-plus"></i> เพิ่มส่วนเกี่ยวกับร้าน</button>
-                    <button class="admin-btn-add" onclick="addSection('detail')"><i class="fas fa-plus"></i> เพิ่มส่วนรูปภาพ</button>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+                    <button class="admin-btn-add" onclick="addSection('about')"><i class="fas fa-plus"></i> เกี่ยวกับร้าน</button>
+                    <button class="admin-btn-add" onclick="addSection('badges')"><i class="fas fa-plus"></i> ป้าย</button>
+                    <button class="admin-btn-add" onclick="addSection('image')"><i class="fas fa-plus"></i> รูปภาพ</button>
+                    <button class="admin-btn-add" onclick="addSection('text')"><i class="fas fa-plus"></i> ข้อความ</button>
                 </div>
+            </div>
+
+            <!-- Tab: Groups Headers -->
+            <div id="tab-groups-headers" class="tab-content">
+                <div id="groups-headers-list"></div>
+                <button class="admin-btn-add" onclick="addGroupsHeader()" style="margin-top:4px;">
+                    <i class="fas fa-plus"></i> เพิ่มหัวข้อกลุ่มใหม่
+                </button>
+            </div>
+
+            <!-- Tab: Group Sections -->
+            <div id="tab-group-sections" class="tab-content">
+                <div id="group-sections-list"></div>
+                <button class="admin-btn-add" onclick="addGroupSection()" style="margin-top:4px;">
+                    <i class="fas fa-plus"></i> เพิ่มกลุ่มย่อยใหม่
+                </button>
             </div>
 
             <!-- Tab: Portfolio -->
             <div id="tab-portfolio" class="tab-content">
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">🎨 ผลงานร้าน</h3>
-                    <div id="portfolio-list"></div>
-                    <button class="admin-btn-add" onclick="addPortfolioItem()"><i class="fas fa-plus"></i> เพิ่มผลงาน</button>
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;"><i class="fas fa-images" style="color:var(--main);"></i> หัวข้อผลงาน</h3>
+                    <input type="text" id="a-portfolio-title" class="admin-input" placeholder="หัวข้อผลงาน">
                 </div>
+                <div id="portfolio-items-list"></div>
+                <button class="admin-btn-add" onclick="addPortfolioItem()" style="margin-top:4px;">
+                    <i class="fas fa-plus"></i> เพิ่มรายการผลงาน
+                </button>
+                <button onclick="savePortfolio()" class="admin-btn-save" style="margin-top:10px;">
+                    <i class="fas fa-save"></i> บันทึกผลงาน
+                </button>
             </div>
 
             <!-- Tab: Collab -->
             <div id="tab-collab" class="tab-content">
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">🤝 กลุ่มในเครือ</h3>
-                    <div id="collab-list"></div>
-                    <button class="admin-btn-add" onclick="addCollabItem()"><i class="fas fa-plus"></i> เพิ่มกลุ่มในเครือ</button>
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;"><i class="fas fa-handshake" style="color:var(--main);"></i> หัวข้อกลุ่มในเครือ</h3>
+                    <input type="text" id="a-collab-title" class="admin-input" placeholder="หัวข้อกลุ่มในเครือ">
                 </div>
-                <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">💰 ข้อมูลการชำระเงิน</h3>
+                <div id="collab-items-list"></div>
+                <button class="admin-btn-add" onclick="addCollabItem()" style="margin-top:4px;">
+                    <i class="fas fa-plus"></i> เพิ่มกลุ่มในเครือ
+                </button>
+                <div class="admin-section" style="margin-top:10px;">
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;"><i class="fas fa-credit-card" style="color:var(--main);"></i> ข้อมูลการชำระเงิน</h3>
                     <input type="text" id="a-payment-info" class="admin-input" placeholder="ข้อมูลการชำระเงิน">
                 </div>
+                <button onclick="saveCollab()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึก</button>
             </div>
 
             <!-- Tab: Contact -->
             <div id="tab-contact" class="tab-content">
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">📞 ช่องทางติดต่อ</h3>
-                    <div id="contact-list"></div>
-                    <button class="admin-btn-add" onclick="addContactItem()"><i class="fas fa-plus"></i> เพิ่มช่องทางติดต่อ</button>
+                    <h3 style="font-size:0.95rem;margin-bottom:10px;"><i class="fas fa-link" style="color:var(--main);"></i> ปุ่มติดต่อ</h3>
+                    <div id="contact-btns-list"></div>
+                    <button class="admin-btn-add" onclick="addContactBtn()"><i class="fas fa-plus"></i> เพิ่มปุ่มติดต่อ</button>
                 </div>
+                <button onclick="saveContact()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกส่วนติดต่อ</button>
             </div>
 
             <!-- Tab: Footer -->
             <div id="tab-footer" class="tab-content">
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">📌 ส่วนท้าย</h3>
-                    <input type="text" id="a-footer-copyright" class="admin-input" placeholder="ลิขสิทธิ์">
-                    <p style="color: var(--text-soft); font-size:0.8rem; margin-top:5px;">เช่น © 2026 Fumiko Poko | Studio Fumiko ✨🌌</p>
+                    <h3 style="font-size:0.95rem;margin-bottom:14px;"><i class="fas fa-copyright" style="color:var(--main);"></i> ส่วนท้าย</h3>
+                    <input type="text" id="a-footer-name" class="admin-input" placeholder="ชื่อร้านท้ายสุด" style="margin-bottom:10px;">
+                    <input type="text" id="a-footer-text" class="admin-input" placeholder="ข้อความท้าย">
                 </div>
                 <button onclick="saveFooter()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกส่วนท้าย</button>
-            </div>
-
-            <!-- Tab: Background Emojis -->
-            <div id="tab-bg-emojis" class="tab-content">
-                <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">✨ อิโมจิพื้นหลัง</h3>
-                    <div id="bg-emojis-list"></div>
-                    <button class="admin-btn-add" onclick="addBgEmoji()"><i class="fas fa-plus"></i> เพิ่มอิโมจิ</button>
-                </div>
             </div>
 
             <!-- Tab: Google Sheets -->
             <div id="tab-gs" class="tab-content">
                 <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;"><i class="fab fa-google"></i> ตั้งค่า Google Sheets</h3>
+                    <h3 style="font-size:0.95rem;margin-bottom:10px;"><i class="fab fa-google" style="color:var(--main);"></i> ตั้งค่า Google Sheets</h3>
                     <input type="text" id="gs-webapp-url" class="admin-input" placeholder="Web App URL" style="margin-bottom:10px;">
                     <input type="text" id="gs-sheet-id" class="admin-input" placeholder="Spreadsheet ID" style="margin-bottom:10px;">
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <button class="admin-btn-save" onclick="saveGsConfig()">บันทึก</button>
-                        <button class="admin-btn-add" onclick="testGsConnection()">ทดสอบ</button>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                        <button class="admin-btn-save" onclick="saveGsConfig()">บันทึกการตั้งค่า</button>
+                        <button class="admin-btn-add" onclick="testGsConnection()">ทดสอบการเชื่อมต่อ</button>
+                        <span id="gs-status" style="display:none;font-size:0.85rem;padding:8px 15px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;"></span>
                     </div>
                 </div>
             </div>
@@ -932,174 +1219,424 @@
 
     <script>
         // ==================== CONFIG ====================
-        const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzmRLbD5_6DjzLagFJSyY_VtThqX5qGYljnMZBV09KiX7YKQBgfDHCgl4l-ws8enAs/exec';
-        const ADMIN_CREDS = { user: 'admin', pass: 'fumiko123' };
+        const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwhLe7bJFnjbwjTdQpy4lJTWVhM0n_GfJqdKvOAzpt2w9nVz0heO1iNonHovijhCPw/exec'; // เปลี่ยนเป็น URL ที่ได้จาก Deploy
+        const ADMIN_CREDS_KEY = 'fumiko_admin_creds';
         const DATA_KEY = 'fumiko_data';
-        const COLOR_KEY = 'fumiko_colors';
         const GS_CONFIG_KEY = 'fumiko_gs_config';
-        let isAdminLoggedIn = false;
+        const HISTORY_KEY = 'fumiko_history';
+        const COLOR_KEY = 'fumiko_colors';
+        const FONT_KEY = 'fumiko_font';
         let autoSaveTimer = null;
+        let isAdminLoggedIn = false;
 
         // ==================== DEFAULT DATA ====================
         const DEFAULT_COLORS = {
-            'main': '#BB86FC',
             'bg': '#0B0B2A',
-            'text-main': '#FFFFFF',
-            'accent': '#FF71CF'
+            'main': '#BB86FC',
+            'dark': '#C084FC',
+            'accent': '#FF71CF',
+            'glow': 'rgba(187,134,252,0.5)',
+            'card-bg': 'rgba(25,25,70,0.45)',
+            'status-from': '#B8E8B0',
+            'status-to': '#78CC72',
         };
 
         const DEFAULT_DATA = {
             header: {
                 logoImg: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150351.jpeg',
                 shopName: 'Fumiko Poko',
-                shopDesc: 'Welcome to Fumiko Poko\norder • inbox\n\nThank you for supporting!',
+                shopDesc: 'Welcome to Fumiko Poko\norder • inbox\n🟢 Ready for orders\n\nThank you for supporting!',
                 statusText: '🟢 Ready for orders',
                 badges: ['🎨 รับทำป้าย', '📦 รับทำบล็อก', '💡 รับคิดแนวงาน'],
                 queueLink: 'https://ksm-bb.github.io/Fumikopoko/'
             },
-            detailImage: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_192205.jpeg',
-            portfolio: [
-                { title: 'Select Toon', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150323.jpeg', link: 'https://linkbio.co/fumikopoko' },
-                { title: 'Ex. Sign work', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150326.jpeg', link: 'https://drive.google.com/drive/folders/1-2hTMdBqNtQu01wz9I42MaHVjOGk6JgB' },
-                { title: 'Ex. Block Draft', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150327.jpeg', link: 'https://drive.google.com/drive/folders/10wCHkj_mqoyXw8oNmK00_dOUgeNKykP2' },
-                { title: 'Ex. block work', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150328.jpeg', link: 'https://drive.google.com/drive/folders/10LgobkO4-Bnqj6_7C_BHMZA5MinVgqYq' }
+            backgroundEmojis: ['✨', '🪐', '💫', '🧸', '🌸'],
+            sections: [
+                { type: 'image', title: 'Detail', imageUrl: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_192205.jpeg', headerIndex: -1 },
+                { type: 'portfolio', title: '🎨 ผลงานร้าน / Portfolio', items: [
+                    { title: 'Select Toon', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150323.jpeg', link: 'https://linkbio.co/fumikopoko' },
+                    { title: 'Ex. Sign work', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150326.jpeg', link: 'https://drive.google.com/drive/folders/1-2hTMdBqNtQu01wz9I42MaHVjOGk6JgB' },
+                    { title: 'Ex. Block Draft', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150327.jpeg', link: 'https://drive.google.com/drive/folders/10wCHkj_mqoyXw8oNmK00_dOUgeNKykP2' },
+                    { title: 'Ex. block work', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150328.jpeg', link: 'https://drive.google.com/drive/folders/10LgobkO4-Bnqj6_7C_BHMZA5MinVgqYq' }
+                ], headerIndex: -1 },
+                { type: 'collab', title: '🤝 กลุ่มในเครือ / Collab', items: [
+                    { title: 'Rainel V1', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_151002.jpeg', link: 'https://shorturl.at/0hO45' },
+                    { title: 'FumoFumi', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150336.jpeg', link: 'https://drive.google.com/drive/folders/115OCfCvxXlwbCE3iy2KUMtHuLyVXc4wR' },
+                    { title: 'Constellation', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150338.jpeg', link: 'https://shorturl.asia/Bat15' },
+                    { title: 'Constellation of star', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150339.jpeg', link: 'https://drive.google.com/drive/folders/12zwJ3Cr5-iO2Z6UKjF6utgBdSV9kd0Wv' },
+                    { title: 'Grufay Fusom', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150340.jpeg', link: 'https://drive.google.com/drive/folders/1AktJ-cZ9CP0kJV_OfECV-930mvbmL81Y' }
+                ], paymentInfo: '💰 Payment: K Bank (กสิกรไทย)', headerIndex: -1 }
             ],
-            collab: [
-                { title: 'Rainel V1', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_151002.jpeg', link: 'https://shorturl.at/0hO45' },
-                { title: 'FumoFumi', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150336.jpeg', link: 'https://drive.google.com/drive/folders/115OCfCvxXlwbCE3iy2KUMtHuLyVXc4wR' },
-                { title: 'Constellation', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150338.jpeg', link: 'https://shorturl.asia/Bat15' },
-                { title: 'Constellation of star', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150339.jpeg', link: 'https://drive.google.com/drive/folders/12zwJ3Cr5-iO2Z6UKjF6utgBdSV9kd0Wv' },
-                { title: 'Grufay Fusom', image: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150340.jpeg', link: 'https://drive.google.com/drive/folders/1AktJ-cZ9CP0kJV_OfECV-930mvbmL81Y' }
-            ],
-            paymentInfo: '💰 Payment: K Bank (กสิกรไทย)',
-            contact: [
-                { type: 'facebook', text: 'Facebook: Fumiko Poko', link: 'https://www.facebook.com/fumiko.poko?' },
-                { type: 'line', text: 'Line: @641sfkjr', link: 'https://line.me/R/ti/p/@641sfkjr' }
-            ],
-            footer: '© 2026 Fumiko Poko | Studio Fumiko ✨🌌',
-            bgEmojis: ['✨', '🪐', '💫', '🧸', '🌸']
+            groupsHeaders: [],
+            groupSections: [],
+            contact: {
+                buttons: [
+                    { icon: '📘', text: 'Facebook: Fumiko Poko', link: 'https://www.facebook.com/fumiko.poko?', style: 'fb' },
+                    { icon: '💬', text: 'Line: @641sfkjr', link: 'https://line.me/R/ti/p/@641sfkjr', style: 'line' }
+                ]
+            },
+            footer: {
+                name: 'Fumiko Poko',
+                text: '© 2026 Fumiko Poko | Studio Fumiko ✨🌌'
+            }
         };
 
-        // ==================== UTILITY FUNCTIONS ====================
-        function loadData() {
-            try {
-                const saved = localStorage.getItem(DATA_KEY);
-                return saved ? JSON.parse(saved) : DEFAULT_DATA;
-            } catch {
-                return DEFAULT_DATA;
-            }
-        }
+        // ==================== THAI FONTS ====================
+        const THAI_FONTS = [
+            { name: 'Mitr', preview: 'สวัสดีครับ' },
+            { name: 'Sarabun', preview: 'สวัสดีครับ' },
+            { name: 'Kanit', preview: 'สวัสดีครับ' },
+            { name: 'Prompt', preview: 'สวัสดีครับ' },
+            { name: 'Itim', preview: 'สวัสดีครับ' },
+            { name: 'Mali', preview: 'สวัสดีครับ' },
+            { name: 'Kodchasan', preview: 'สวัสดีครับ' },
+            { name: 'Krub', preview: 'สวัสดีครับ' },
+            { name: 'Charm', preview: 'สวัสดีครับ' },
+            { name: 'Pridi', preview: 'สวัสดีครับ' },
+        ];
+        let selectedFont = localStorage.getItem(FONT_KEY) || 'Mitr';
 
-        function saveData(data, showToast_notify = true) {
-            localStorage.setItem(DATA_KEY, JSON.stringify(data));
-            if (showToast_notify) showToast('✅ บันทึกเรียบร้อย', 'success');
-            renderSite();
-            if (document.getElementById('admin-overlay').classList.contains('show')) {
-                renderAdminForms();
-            }
-        }
+        // ==================== CONTACT STYLES ====================
+        const CONTACT_STYLES = [
+            { id: 'fb', label: 'Facebook', icon: '📘', class: '' },
+            { id: 'line', label: 'Line', icon: '💬', class: '' },
+            { id: 'ig', label: 'Instagram', icon: '📸', class: '' },
+            { id: 'custom', label: 'Custom', icon: '🔗', class: '' },
+        ];
 
+        // ==================== UTILS ====================
         function loadColors() {
-            try {
-                return { ...DEFAULT_COLORS, ...JSON.parse(localStorage.getItem(COLOR_KEY) || '{}') };
-            } catch {
-                return DEFAULT_COLORS;
-            }
+            try { return { ...DEFAULT_COLORS, ...JSON.parse(localStorage.getItem(COLOR_KEY) || '{}') }; }
+            catch { return { ...DEFAULT_COLORS }; }
         }
 
         function applyColors(colors) {
-            const root = document.documentElement.style;
-            root.setProperty('--main', colors.main);
-            root.setProperty('--bg', colors.bg);
-            root.setProperty('--white', colors['text-main']);
-            root.setProperty('--accent', colors.accent);
-            root.setProperty('--glow', `rgba(${hexToRgb(colors.main)}, 0.5)`);
-            document.body.style.background = colors.bg;
-        }
-
-        function hexToRgb(hex) {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '187, 134, 252';
-        }
-
-        function syncColorText(key, value) {
-            document.getElementById(`color-${key}-text`).value = value;
-            applyColorLive(key, value);
-        }
-
-        function syncColorPicker(key, value) {
-            if (/^#[0-9A-F]{6}$/i.test(value)) {
-                document.getElementById(`color-${key}`).value = value;
-                applyColorLive(key, value);
-            }
-        }
-
-        function applyColorLive(key, value) {
-            const root = document.documentElement.style;
-            if (key === 'main') {
-                root.setProperty('--main', value);
-                root.setProperty('--glow', `rgba(${hexToRgb(value)}, 0.5)`);
-            } else if (key === 'bg') {
-                root.setProperty('--bg', value);
-                document.body.style.background = value;
-            } else if (key === 'text-main') {
-                root.setProperty('--white', value);
-            } else if (key === 'accent') {
-                root.setProperty('--accent', value);
-            }
+            const r = document.documentElement.style;
+            r.setProperty('--bg', colors.bg || DEFAULT_COLORS.bg);
+            r.setProperty('--main', colors.main || DEFAULT_COLORS.main);
+            r.setProperty('--dark', colors.dark || DEFAULT_COLORS.dark);
+            r.setProperty('--accent', colors.accent || DEFAULT_COLORS.accent);
+            r.setProperty('--glow', colors.glow || DEFAULT_COLORS.glow);
+            r.setProperty('--card-bg', colors['card-bg'] || DEFAULT_COLORS['card-bg']);
+            r.setProperty('--status-from', colors['status-from'] || DEFAULT_COLORS['status-from']);
+            r.setProperty('--status-to', colors['status-to'] || DEFAULT_COLORS['status-to']);
+            document.body.style.background = colors.bg || DEFAULT_COLORS.bg;
         }
 
         function saveColors() {
             const colors = {
-                main: document.getElementById('color-main-text').value,
                 bg: document.getElementById('color-bg-text').value,
-                'text-main': document.getElementById('color-text-main-text').value,
-                accent: document.getElementById('color-accent-text').value
+                main: document.getElementById('color-main-text').value,
+                dark: document.getElementById('color-dark-text').value,
+                accent: document.getElementById('color-accent-text').value,
+                glow: document.getElementById('color-glow-text').value,
+                'card-bg': document.getElementById('color-card-bg-text').value,
+                'status-from': document.getElementById('color-status-from-text').value,
+                'status-to': document.getElementById('color-status-to-text').value,
             };
             localStorage.setItem(COLOR_KEY, JSON.stringify(colors));
             applyColors(colors);
-            showToast('🎨 บันทึกสีเรียบร้อย', 'success');
+            showToast('🎨 บันทึกสีเรียบร้อย');
         }
 
         function resetColors() {
             localStorage.removeItem(COLOR_KEY);
             applyColors(DEFAULT_COLORS);
             fillColorAdmin(DEFAULT_COLORS);
-            showToast('↩️ รีเซ็ตสีเรียบร้อย', 'success');
+            showToast('↩️ รีเซ็ตสีเรียบร้อย');
         }
 
         function fillColorAdmin(colors) {
-            document.getElementById('color-main').value = colors.main;
-            document.getElementById('color-main-text').value = colors.main;
             document.getElementById('color-bg').value = colors.bg;
             document.getElementById('color-bg-text').value = colors.bg;
-            document.getElementById('color-text-main').value = colors['text-main'];
-            document.getElementById('color-text-main-text').value = colors['text-main'];
+            document.getElementById('color-main').value = colors.main;
+            document.getElementById('color-main-text').value = colors.main;
+            document.getElementById('color-dark').value = colors.dark;
+            document.getElementById('color-dark-text').value = colors.dark;
             document.getElementById('color-accent').value = colors.accent;
             document.getElementById('color-accent-text').value = colors.accent;
+            document.getElementById('color-glow').value = colors.glow;
+            document.getElementById('color-glow-text').value = colors.glow;
+            document.getElementById('color-card-bg').value = colors['card-bg'];
+            document.getElementById('color-card-bg-text').value = colors['card-bg'];
+            document.getElementById('color-status-from').value = colors['status-from'];
+            document.getElementById('color-status-from-text').value = colors['status-from'];
+            document.getElementById('color-status-to').value = colors['status-to'];
+            document.getElementById('color-status-to-text').value = colors['status-to'];
+        }
+
+        function syncColorText(key, val) {
+            const el = document.getElementById('color-' + key + '-text');
+            if (el) el.value = val;
+            applyColorLive(key, val);
+        }
+
+        function syncColorPicker(key, val) {
+            if (/^#[0-9A-Fa-f]{6}$/.test(val) || val.includes('rgba') || val.includes('rgb')) {
+                const el = document.getElementById('color-' + key);
+                if (el) el.value = val.startsWith('#') ? val : '#000000';
+                applyColorLive(key, val);
+            }
+        }
+
+        function applyColorLive(key, val) {
+            const map = {
+                'bg': '--bg',
+                'main': '--main',
+                'dark': '--dark',
+                'accent': '--accent',
+                'glow': '--glow',
+                'card-bg': '--card-bg',
+                'status-from': '--status-from',
+                'status-to': '--status-to'
+            };
+            if (map[key]) document.documentElement.style.setProperty(map[key], val);
+            if (key === 'bg') document.body.style.background = val;
+        }
+
+        function applyFont(f) {
+            document.documentElement.style.setProperty('--font-main', `'${f}', 'Mitr', sans-serif`);
+            document.body.style.fontFamily = `'${f}', 'Mitr', sans-serif`;
+        }
+
+        function renderFontGrid() {
+            const container = document.getElementById('font-grid-container');
+            if (!container) return;
+            container.innerHTML = '';
+            THAI_FONTS.forEach(font => {
+                const div = document.createElement('div');
+                div.className = 'font-option' + (selectedFont === font.name ? ' selected' : '');
+                div.innerHTML = `<div style="font-family:'${font.name}',sans-serif;font-size:1.1rem;">${font.preview}</div>
+                                <div style="font-size:0.75rem;color:var(--text-soft);margin-top:4px;">${font.name}</div>`;
+                div.onclick = () => {
+                    selectedFont = font.name;
+                    document.querySelectorAll('.font-option').forEach(el => el.classList.remove('selected'));
+                    div.classList.add('selected');
+                    applyFont(font.name);
+                };
+                container.appendChild(div);
+            });
+        }
+
+        function saveFont() {
+            localStorage.setItem(FONT_KEY, selectedFont);
+            applyFont(selectedFont);
+            showToast('✅ บันทึกฟอนต์เรียบร้อย');
+        }
+
+        function loadData() {
+            try {
+                const raw = localStorage.getItem(DATA_KEY);
+                if (!raw) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+                return JSON.parse(raw);
+            } catch {
+                return JSON.parse(JSON.stringify(DEFAULT_DATA));
+            }
+        }
+
+        async function saveData(data, notify = true, addHist = true) {
+            try {
+                localStorage.setItem(DATA_KEY, JSON.stringify(data));
+                if (addHist) addToHistory(data);
+                if (notify) showToast('✅ บันทึกเรียบร้อย');
+                renderSite();
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        function addToHistory(data) {
+            try {
+                const h = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+                h.unshift({ timestamp: new Date().toISOString(), data: JSON.parse(JSON.stringify(data)) });
+                if (h.length > 20) h.pop();
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+            } catch { }
+        }
+
+        function showHistory() {
+            const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            if (!history.length) {
+                showModal({ icon: 'info', title: 'ไม่มีประวัติ', html: 'ยังไม่มีประวัติการบันทึก', confirmText: 'ตกลง' });
+                return;
+            }
+            let html = '<div style="max-height:300px;overflow-y:auto;">';
+            history.forEach((item, i) => {
+                const date = new Date(item.timestamp).toLocaleString('th-TH');
+                html += `<div class="history-item" onclick="restoreHistory(${i});closeModal()">
+                            <div><i class="fas fa-clock"></i> ${date}</div>
+                            <i class="fas fa-undo"></i>
+                        </div>`;
+            });
+            html += '</div>';
+            showModal({ icon: '', title: '📜 ประวัติการบันทึก', html, confirmText: 'ปิด' });
+        }
+
+        function restoreHistory(index) {
+            const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            if (history[index]) {
+                saveData(history[index].data, true, false);
+                showToast('✅ กู้คืนสำเร็จ');
+            }
+        }
+
+        function showModal({ icon = '', title = '', html = '', confirmText = 'ตกลง', cancelText = null, dangerConfirm = false, timer }) {
+            return new Promise(resolve => {
+                const iconMap = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️', question: '❓' };
+                document.getElementById('cmodal-icon').textContent = iconMap[icon] || icon;
+                document.getElementById('cmodal-title').textContent = title;
+                document.getElementById('cmodal-text').innerHTML = html;
+                const actions = document.getElementById('cmodal-actions');
+                actions.innerHTML = '';
+                const confirmBtn = document.createElement('button');
+                confirmBtn.className = 'cmodal-btn ' + (dangerConfirm ? 'cmodal-btn-danger' : 'cmodal-btn-confirm');
+                confirmBtn.textContent = confirmText;
+                confirmBtn.onclick = () => { closeModal(); resolve({ isConfirmed: true }); };
+                actions.appendChild(confirmBtn);
+                if (cancelText) {
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.className = 'cmodal-btn cmodal-btn-cancel';
+                    cancelBtn.textContent = cancelText;
+                    cancelBtn.onclick = () => { closeModal(); resolve({ isConfirmed: false, dismiss: 'cancel' }); };
+                    actions.appendChild(cancelBtn);
+                }
+                document.getElementById('cmodal').classList.add('show');
+                if (timer) setTimeout(() => { closeModal(); resolve({ isConfirmed: false, dismiss: 'timer' }); }, timer);
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('cmodal').classList.remove('show');
+        }
+
+        function showToast(msg, type = 'success', duration = 2200) {
+            const t = document.getElementById('toast');
+            t.className = 'show ' + type;
+            t.innerHTML = msg;
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), duration);
+        }
+
+        // ==================== GOOGLE SHEETS ====================
+        function getGsConfig() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(GS_CONFIG_KEY)) || {};
+                return { webAppUrl: GS_WEBAPP_URL || saved.webAppUrl || '', sheetId: saved.sheetId || '' };
+            } catch {
+                return { webAppUrl: GS_WEBAPP_URL || '', sheetId: '' };
+            }
+        }
+
+        function saveGsConfig() {
+            const config = {
+                webAppUrl: document.getElementById('gs-webapp-url').value.trim(),
+                sheetId: document.getElementById('gs-sheet-id').value.trim()
+            };
+            localStorage.setItem(GS_CONFIG_KEY, JSON.stringify(config));
+            showModal({ icon: 'success', title: 'บันทึกการตั้งค่าเรียบร้อย', html: '⚠️ อย่าลืมอัพเดทค่า GS_WEBAPP_URL ในโค้ด HTML', confirmText: 'ตกลง' });
+        }
+
+        function fetchViaJsonp(url, timeoutMs = 10000) {
+            return new Promise((resolve, reject) => {
+                const cbName = 'jsonp_cb_' + Math.round(100000 * Math.random()) + '_' + Date.now();
+                let script = null, timer = null;
+                function cleanup() {
+                    if (timer) clearTimeout(timer);
+                    if (window[cbName]) delete window[cbName];
+                    if (script && script.parentNode) script.parentNode.removeChild(script);
+                }
+                window[cbName] = function (data) { cleanup(); resolve(data); };
+                timer = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, timeoutMs);
+                script = document.createElement('script');
+                const sep = url.includes('?') ? '&' : '?';
+                script.src = url + sep + 'callback=' + cbName;
+                script.onerror = () => { cleanup(); reject(new Error('load fail')); };
+                document.body.appendChild(script);
+            });
+        }
+
+        async function loadFromGoogleSheets(showUI) {
+            const config = getGsConfig();
+            const url = config.webAppUrl;
+            if (!url) {
+                if (showUI) showModal({ icon: 'warning', title: 'ไม่ได้ตั้งค่า Web App URL', html: 'กรุณาใส่ Web App URL', confirmText: 'ตกลง' });
+                return false;
+            }
+            if (showUI) showToast('<i class="fas fa-spinner loading-spin"></i> กำลังโหลดจาก Sheets...', 'info', 10000);
+            try {
+                const result = await fetchViaJsonp(url.replace(/\/$/, '') + `?action=getData`, 10000);
+                if (result && result.status === 'success' && result.data) {
+                    localStorage.setItem(DATA_KEY, JSON.stringify(result.data));
+                    if (showUI) {
+                        showToast('✅ โหลดข้อมูลสำเร็จ');
+                        renderSite();
+                        if (document.getElementById('admin-overlay').classList.contains('show')) openAdmin();
+                    }
+                    return true;
+                } else throw new Error('Invalid data');
+            } catch (error) {
+                console.warn('GS load failed:', error.message);
+                if (showUI) showModal({ icon: 'error', title: 'โหลดข้อมูลล้มเหลว', html: 'ไม่สามารถเชื่อมต่อ Google Sheets ได้', confirmText: 'ตกลง' });
+                return false;
+            }
+        }
+
+        async function saveToGoogleSheets(data) {
+            const config = getGsConfig();
+            if (!config.webAppUrl) return false;
+            try {
+                await fetch(config.webAppUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'updateData', data })
+                });
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        async function testGsConnection() {
+            const status = document.getElementById('gs-status');
+            status.style.display = 'inline-flex';
+            status.className = 'gs-loading';
+            status.innerHTML = '<i class="fas fa-spinner loading-spin"></i> กำลังทดสอบ...';
+            const url = document.getElementById('gs-webapp-url').value.trim();
+            if (!url) {
+                status.className = 'gs-err';
+                status.innerHTML = '<i class="fas fa-times-circle"></i> กรุณากรอก URL';
+                return;
+            }
+            try {
+                await fetchViaJsonp(url.replace(/\/$/, '') + `?action=ping`, 5000);
+                status.className = 'gs-ok';
+                status.innerHTML = '<i class="fas fa-check-circle"></i> เชื่อมต่อสำเร็จ';
+            } catch {
+                status.className = 'gs-err';
+                status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ไม่สามารถเชื่อมต่อได้';
+            }
         }
 
         // ==================== RENDER SITE ====================
         function renderSite() {
             const data = loadData();
-            const colors = loadColors();
-            applyColors(colors);
-
+            const container = document.getElementById('main-content');
+            
             // Render background emojis
             const bgContainer = document.getElementById('bg-emojis-container');
             bgContainer.innerHTML = '';
-            data.bgEmojis.forEach((emoji, i) => {
+            data.backgroundEmojis.forEach((emoji, i) => {
                 const span = document.createElement('span');
                 span.className = 'floating-emoji';
-                span.style.left = `${10 + (i * 20)}%`;
-                span.style.animationDelay = `${i * 2}s`;
+                span.style.left = (10 + (i * 20) % 80) + '%';
+                span.style.animationDelay = (i * 2) + 's';
                 span.textContent = emoji;
                 bgContainer.appendChild(span);
             });
 
-            // Render main content
-            const main = document.getElementById('main-content');
-            main.innerHTML = `
+            let html = `
                 <div class="header-box">
                     <div class="logo-wrapper">
                         <div class="logo-glow"></div>
@@ -1109,63 +1646,679 @@
                     <p style="white-space: pre-line; margin-top: 10px; font-size: 13px; color: var(--dark); opacity: 0.9;">
                         ${data.header.shopDesc}
                     </p>
-                    <span class="status-badge">
-                        <span class="status-dot"></span>${data.header.statusText}
-                    </span>
                     <div class="badge-group">
                         ${data.header.badges.map(b => `<span class="badge">${b}</span>`).join('')}
                     </div>
                     <a href="${data.header.queueLink}" target="_blank" class="btn btn-outline">เช็คคิวงาน ✨</a>
                 </div>
-
-                <div class="section">
-                    <h2>—⁺˖°ʚ Detail​ °⁺˖—​</h2>
-                    <img src="${data.detailImage}" alt="Detail" style="width:100%; border-radius:15px; border:1px solid var(--main);">
-                </div>
-
-                <div class="section">
-                    <h2>🎨 ผลงานร้าน / Portfolio</h2>
-                    <div class="grid">
-                        ${data.portfolio.map(item => `
-                            <a href="${item.link}" target="_blank" class="card">
-                                <img src="${item.image}">
-                                <span style="font-size:12px;">${item.title}</span>
-                            </a>
-                        `).join('')}
-                    </div>
-                    <a href="https://line.me/R/ti/p/@641sfkjr" class="btn btn-main">จองคิวสั่งงานคลิกเลย 🧸</a>
-                </div>
-
-                <div class="section">
-                    <h2>🤝 กลุ่มในเครือ / Collab</h2>
-                    <div class="grid">
-                        ${data.collab.map(item => `
-                            <a href="${item.link}" target="_blank" class="card">
-                                <img src="${item.image}">
-                                <span style="font-size:11px;">${item.title}</span>
-                            </a>
-                        `).join('')}
-                    </div>
-                    <p style="font-size:12px; text-align:center; margin-top:25px; opacity:0.8;">${data.paymentInfo}</p>
-                </div>
-
-                <div class="footer">
-                    <p class="contact-label">Contact • FUMIKO</p>
-                    <div class="social-group">
-                        ${data.contact.map(c => `
-                            <a href="${c.link}" target="_blank" class="social-btn">${c.text}</a>
-                        `).join('')}
-                    </div>
-                    <p style="font-size:10px; opacity:0.5; margin-top:30px;">${data.footer}</p>
-                </div>
             `;
+
+            // Render sections
+            data.sections.forEach(section => {
+                if (section.headerIndex === -1) {
+                    html += renderSection(section);
+                }
+            });
+
+            // Render groups headers and their sections
+            data.groupsHeaders.forEach((header, hi) => {
+                html += `<div class="section"><h2>${header.title}</h2>`;
+                if (header.sub) html += `<p style="margin-bottom:15px;">${header.sub}</p>`;
+                
+                data.sections.forEach(s => {
+                    if (s.headerIndex === hi) html += renderSection(s);
+                });
+                
+                data.groupSections.filter(gs => gs.headerIndex === hi).forEach(gs => {
+                    html += `<div style="margin-top:15px;"><h3 style="color:var(--main);margin-bottom:10px;">${gs.title}</h3>`;
+                    gs.groups.forEach(g => html += renderGroupItem(g));
+                    html += `</div>`;
+                });
+                
+                html += `</div>`;
+            });
+
+            // Contact section
+            html += `<div class="section">
+                <h2>💌 ติดต่อ</h2>
+                <div class="social-group">
+                    ${data.contact.buttons.map(btn => 
+                        `<a href="${btn.link}" target="_blank" class="social-btn">${btn.icon} ${btn.text}</a>`
+                    ).join('')}
+                </div>
+            </div>`;
+
+            // Footer
+            html += `<div class="footer">
+                <p class="contact-label">${data.footer.name}</p>
+                <p style="font-size:10px; opacity:0.5;">${data.footer.text}</p>
+            </div>`;
+
+            container.innerHTML = html;
         }
 
-        // ==================== ADMIN FUNCTIONS ====================
-        function renderAdminForms() {
-            const data = loadData();
+        function renderSection(section) {
+            switch (section.type) {
+                case 'image':
+                    return `<div class="section"><h2>${section.title}</h2><img src="${section.imageUrl}" style="width:100%; border-radius:15px;"></div>`;
+                case 'portfolio':
+                    return `<div class="section"><h2>${section.title}</h2><div class="grid">${section.items.map(item => 
+                        `<a href="${item.link}" target="_blank" class="card"><img src="${item.image}"><span>${item.title}</span></a>`
+                    ).join('')}</div></div>`;
+                case 'collab':
+                    return `<div class="section"><h2>${section.title}</h2><div class="grid">${section.items.map(item => 
+                        `<a href="${item.link}" target="_blank" class="card"><img src="${item.image}"><span>${item.title}</span></a>`
+                    ).join('')}</div>${section.paymentInfo ? `<p style="text-align:center; margin-top:15px;">${section.paymentInfo}</p>` : ''}</div>`;
+                case 'about':
+                    return `<div class="section"><h2>${section.title}</h2><p>${section.text}</p></div>`;
+                case 'badges':
+                    return `<div class="section"><h2>${section.title}</h2><div class="badge-group">${section.badges.map(b => `<span class="badge">${b}</span>`).join('')}</div></div>`;
+                case 'text':
+                    return `<div class="section"><h2>${section.title}</h2><p>${section.content}</p></div>`;
+                default:
+                    return '';
+            }
+        }
 
-            // Header tab
+        function renderGroupItem(group) {
+            return `<div class="group-item">
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                    <span>${group.name}</span>
+                    ${group.price ? `<span class="gi-price">${group.price}</span>` : ''}
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">
+                    ${(group.tags || []).map(t => `<span class="gi-tag">${t}</span>`).join('')}
+                </div>
+                ${group.note ? `<div style="font-size:0.8rem;color:var(--text-soft);margin-bottom:8px;">${group.note}</div>` : ''}
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    ${(group.links || []).map(l => `<a href="${l.url}" class="gi-link">${l.text}</a>`).join('')}
+                </div>
+            </div>`;
+        }
+
+        // ==================== ADMIN RENDER ====================
+        function renderAdminSections() {
+            const data = loadData();
+            
+            // Emojis
+            const emojisList = document.getElementById('emojis-list');
+            emojisList.innerHTML = '';
+            data.backgroundEmojis.forEach((emoji, i) => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.innerHTML = `
+                    <input type="text" class="admin-input" value="${emoji}" onchange="updateEmoji(${i}, this.value)">
+                    <button class="admin-btn-del" onclick="deleteEmoji(${i})"><i class="fas fa-trash"></i></button>
+                `;
+                emojisList.appendChild(div);
+            });
+
+            // Sections
+            const sectionsList = document.getElementById('sections-list');
+            sectionsList.innerHTML = '';
+            data.sections.forEach((section, i) => {
+                const div = document.createElement('div');
+                div.className = 'admin-section';
+                const badgeClass = section.headerIndex === -1 ? 'badge-global' : 'badge-assigned';
+                const badgeLabel = section.headerIndex === -1 ? '📌 ทั่วไป' : `🔰 กลุ่ม ${section.headerIndex + 1}`;
+                
+                let editForm = '';
+                if (section.type === 'image') {
+                    editForm = `
+                        <input type="text" class="admin-input" placeholder="หัวข้อ" value="${section.title}" onchange="updateSection(${i},'title',this.value)" style="margin-bottom:8px;">
+                        <input type="text" class="admin-input" placeholder="URL รูปภาพ" value="${section.imageUrl}" onchange="updateSection(${i},'imageUrl',this.value)">
+                    `;
+                } else if (section.type === 'portfolio' || section.type === 'collab') {
+                    editForm = `
+                        <input type="text" class="admin-input" placeholder="หัวข้อ" value="${section.title}" onchange="updateSection(${i},'title',this.value)" style="margin-bottom:8px;">
+                        <div id="${section.type}-items-${i}">
+                            ${section.items.map((item, ii) => `
+                                <div class="item-row">
+                                    <input type="text" class="admin-input" placeholder="ชื่อ" value="${item.title}" onchange="update${section.type}Item(${i},${ii},'title',this.value)">
+                                    <input type="text" class="admin-input" placeholder="URL รูป" value="${item.image}" onchange="update${section.type}Item(${i},${ii},'image',this.value)">
+                                    <input type="text" class="admin-input" placeholder="ลิงก์" value="${item.link}" onchange="update${section.type}Item(${i},${ii},'link',this.value)">
+                                    <button class="admin-btn-del" onclick="delete${section.type}Item(${i},${ii})"><i class="fas fa-trash"></i></button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="admin-btn-add" onclick="add${section.type}Item(${i})"><i class="fas fa-plus"></i> เพิ่มรายการ</button>
+                        ${section.type === 'collab' ? `<input type="text" class="admin-input" placeholder="ข้อมูลการชำระเงิน" value="${section.paymentInfo || ''}" onchange="updateSection(${i},'paymentInfo',this.value)" style="margin-top:8px;">` : ''}
+                    `;
+                } else if (section.type === 'about') {
+                    editForm = `
+                        <input type="text" class="admin-input" placeholder="หัวข้อ" value="${section.title}" onchange="updateSection(${i},'title',this.value)" style="margin-bottom:8px;">
+                        <textarea class="admin-input" placeholder="ข้อความ" rows="4" onchange="updateSection(${i},'text',this.value)">${section.text}</textarea>
+                    `;
+                } else if (section.type === 'badges') {
+                    editForm = `
+                        <input type="text" class="admin-input" placeholder="หัวข้อ" value="${section.title}" onchange="updateSection(${i},'title',this.value)" style="margin-bottom:8px;">
+                        <div id="badges-${i}">
+                            ${section.badges.map((badge, bi) => `
+                                <div class="item-row">
+                                    <input type="text" class="admin-input" value="${badge}" onchange="updateBadge(${i},${bi},this.value)">
+                                    <button class="admin-btn-del" onclick="deleteBadge(${i},${bi})"><i class="fas fa-trash"></i></button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="admin-btn-add" onclick="addBadge(${i})"><i class="fas fa-plus"></i> เพิ่มป้าย</button>
+                    `;
+                }
+
+                div.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <h3 style="font-size:0.9rem;display:flex;align-items:center;gap:6px;">
+                            <i class="fas fa-layer-group" style="color:var(--main);"></i> ${section.title}
+                            <span class="${badgeClass}" style="padding:3px 10px;border-radius:20px;font-size:0.72rem;">${badgeLabel}</span>
+                        </h3>
+                        <button class="admin-btn-del" onclick="deleteSection(${i})"><i class="fas fa-trash"></i> ลบ</button>
+                    </div>
+                    <select class="admin-input" onchange="updateSectionHeader(${i},parseInt(this.value))" style="margin-bottom:10px;">
+                        <option value="-1" ${section.headerIndex === -1 ? 'selected' : ''}>📌 แสดงทั่วไป</option>
+                        ${data.groupsHeaders.map((h, hi) => `<option value="${hi}" ${section.headerIndex === hi ? 'selected' : ''}>🔰 ${h.title}</option>`).join('')}
+                    </select>
+                    ${editForm}
+                `;
+                sectionsList.appendChild(div);
+            });
+
+            // Groups Headers
+            const ghl = document.getElementById('groups-headers-list');
+            ghl.innerHTML = '';
+            data.groupsHeaders.forEach((header, i) => {
+                const div = document.createElement('div');
+                div.className = 'admin-section';
+                div.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <h3 style="font-size:0.9rem;"><i class="fas fa-heading" style="color:var(--main);"></i> หัวข้อกลุ่มที่ ${i+1}</h3>
+                        <button class="admin-btn-del" onclick="deleteGroupsHeader(${i})"><i class="fas fa-trash"></i> ลบ</button>
+                    </div>
+                    <input type="text" class="admin-input" placeholder="หัวข้อ" value="${header.title}" onchange="updateGroupsHeader(${i},'title',this.value)" style="margin-bottom:8px;">
+                    <input type="text" class="admin-input" placeholder="คำอธิบาย" value="${header.sub || ''}" onchange="updateGroupsHeader(${i},'sub',this.value)">
+                `;
+                ghl.appendChild(div);
+            });
+
+            // Group Sections
+            const gsl = document.getElementById('group-sections-list');
+            gsl.innerHTML = '';
+            data.groupSections.forEach((gs, i) => {
+                const div = document.createElement('div');
+                div.className = 'admin-section';
+                let groupsHtml = '';
+                gs.groups.forEach((g, gi) => {
+                    groupsHtml += `
+                        <div style="border:1px solid rgba(187,134,252,0.3);border-radius:12px;padding:12px;margin-bottom:10px;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                                <h4 style="font-size:0.85rem;">กลุ่มที่ ${gi+1}</h4>
+                                <button class="admin-btn-del" onclick="deleteGroup(${i},${gi})"><i class="fas fa-trash"></i></button>
+                            </div>
+                            <input type="text" class="admin-input" placeholder="ชื่อกลุ่ม" value="${g.name}" onchange="updateGroup(${i},${gi},'name',this.value)" style="margin-bottom:8px;">
+                            <input type="text" class="admin-input" placeholder="ราคา" value="${g.price || ''}" onchange="updateGroup(${i},${gi},'price',this.value)" style="margin-bottom:8px;">
+                            <div id="group-tags-${i}-${gi}">
+                                ${(g.tags || []).map((tag, ti) => `
+                                    <div class="item-row">
+                                        <input type="text" class="admin-input" value="${tag}" onchange="updateGroupTag(${i},${gi},${ti},this.value)">
+                                        <button class="admin-btn-del" onclick="deleteGroupTag(${i},${gi},${ti})"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="admin-btn-add" onclick="addGroupTag(${i},${gi})" style="margin-bottom:8px;"><i class="fas fa-plus"></i> เพิ่มแท็ก</button>
+                            <input type="text" class="admin-input" placeholder="หมายเหตุ" value="${g.note || ''}" onchange="updateGroup(${i},${gi},'note',this.value)" style="margin-bottom:8px;">
+                            <div id="group-links-${i}-${gi}">
+                                ${(g.links || []).map((link, li) => `
+                                    <div class="item-row">
+                                        <input type="text" class="admin-input" placeholder="ข้อความ" value="${link.text}" onchange="updateGroupLink(${i},${gi},${li},'text',this.value)">
+                                        <input type="text" class="admin-input" placeholder="URL" value="${link.url}" onchange="updateGroupLink(${i},${gi},${li},'url',this.value)">
+                                        <button class="admin-btn-del" onclick="deleteGroupLink(${i},${gi},${li})"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="admin-btn-add" onclick="addGroupLink(${i},${gi})"><i class="fas fa-plus"></i> เพิ่มลิงก์</button>
+                        </div>
+                    `;
+                });
+                div.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                        <h3 style="font-size:0.9rem;"><i class="fas fa-layer-group" style="color:var(--main);"></i> ${gs.title}</h3>
+                        <button class="admin-btn-del" onclick="deleteGroupSection(${i})"><i class="fas fa-trash"></i> ลบ</button>
+                    </div>
+                    <select class="admin-input" onchange="updateGroupSectionHeader(${i},parseInt(this.value))" style="margin-bottom:10px;">
+                        <option value="-1" ${gs.headerIndex === -1 ? 'selected' : ''}>ไม่มีหัวข้อ</option>
+                        ${data.groupsHeaders.map((h, hi) => `<option value="${hi}" ${gs.headerIndex === hi ? 'selected' : ''}>${h.title}</option>`).join('')}
+                    </select>
+                    <input type="text" class="admin-input" placeholder="ชื่อกลุ่มย่อย" value="${gs.title}" onchange="updateGroupSection(${i},'title',this.value)" style="margin-bottom:10px;">
+                    ${groupsHtml}
+                    <button class="admin-btn-add" onclick="addGroup(${i})"><i class="fas fa-plus"></i> เพิ่มกลุ่ม</button>
+                `;
+                gsl.appendChild(div);
+            });
+
+            // Portfolio
+            const portfolioItems = document.getElementById('portfolio-items-list');
+            portfolioItems.innerHTML = '';
+            const portfolioSection = data.sections.find(s => s.type === 'portfolio');
+            if (portfolioSection) {
+                portfolioSection.items.forEach((item, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'item-row';
+                    div.innerHTML = `
+                        <input type="text" class="admin-input" placeholder="ชื่อ" value="${item.title}" onchange="updatePortfolioItem(${i},'title',this.value)">
+                        <input type="text" class="admin-input" placeholder="URL รูป" value="${item.image}" onchange="updatePortfolioItem(${i},'image',this.value)">
+                        <input type="text" class="admin-input" placeholder="ลิงก์" value="${item.link}" onchange="updatePortfolioItem(${i},'link',this.value)">
+                        <button class="admin-btn-del" onclick="deletePortfolioItem(${i})"><i class="fas fa-trash"></i></button>
+                    `;
+                    portfolioItems.appendChild(div);
+                });
+            }
+
+            // Collab
+            const collabItems = document.getElementById('collab-items-list');
+            collabItems.innerHTML = '';
+            const collabSection = data.sections.find(s => s.type === 'collab');
+            if (collabSection) {
+                collabSection.items.forEach((item, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'item-row';
+                    div.innerHTML = `
+                        <input type="text" class="admin-input" placeholder="ชื่อ" value="${item.title}" onchange="updateCollabItem(${i},'title',this.value)">
+                        <input type="text" class="admin-input" placeholder="URL รูป" value="${item.image}" onchange="updateCollabItem(${i},'image',this.value)">
+                        <input type="text" class="admin-input" placeholder="ลิงก์" value="${item.link}" onchange="updateCollabItem(${i},'link',this.value)">
+                        <button class="admin-btn-del" onclick="deleteCollabItem(${i})"><i class="fas fa-trash"></i></button>
+                    `;
+                    collabItems.appendChild(div);
+                });
+            }
+
+            // Contact buttons
+            renderContactAdmin();
+        }
+
+        function renderContactAdmin() {
+            const data = loadData();
+            const list = document.getElementById('contact-btns-list');
+            list.innerHTML = '';
+            data.contact.buttons.forEach((btn, i) => {
+                const div = document.createElement('div');
+                div.className = 'admin-section';
+                div.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <h4 style="font-size:0.9rem;">ปุ่มที่ ${i+1}</h4>
+                        <button class="admin-btn-del" onclick="deleteContactBtn(${i})"><i class="fas fa-trash"></i> ลบ</button>
+                    </div>
+                    <div class="item-row" style="margin-bottom:8px;">
+                        <input type="text" class="admin-input" placeholder="ไอคอน" value="${btn.icon}" onchange="updateContactBtn(${i},'icon',this.value)" style="max-width:70px;">
+                        <input type="text" class="admin-input" placeholder="ข้อความ" value="${btn.text}" onchange="updateContactBtn(${i},'text',this.value)">
+                    </div>
+                    <input type="text" class="admin-input" placeholder="ลิงก์" value="${btn.link}" onchange="updateContactBtn(${i},'link',this.value)">
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        // ==================== UPDATE FUNCTIONS ====================
+        function updateEmoji(i, value) {
+            const d = loadData();
+            d.backgroundEmojis[i] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteEmoji(i) {
+            showModal({ icon: 'warning', title: 'ยืนยันการลบ', html: 'ลบอิโมจินี้?', confirmText: 'ใช่, ลบเลย', cancelText: 'ยกเลิก', dangerConfirm: true }).then(r => {
+                if (r.isConfirmed) {
+                    const d = loadData();
+                    d.backgroundEmojis.splice(i, 1);
+                    saveData(d, true, true);
+                    renderAdminSections();
+                }
+            });
+        }
+
+        function addEmoji() {
+            const d = loadData();
+            d.backgroundEmojis.push('✨');
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function saveEmojis() {
+            showToast('✅ บันทึกอิโมจิเรียบร้อย');
+        }
+
+        function updateSectionHeader(i, hi) {
+            const d = loadData();
+            d.sections[i].headerIndex = hi;
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateSection(i, field, value) {
+            const d = loadData();
+            d.sections[i][field] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteSection(i) {
+            showModal({ icon: 'warning', title: 'ยืนยันการลบ', html: 'คุณแน่ใจหรือไม่?', confirmText: 'ใช่, ลบเลย', cancelText: 'ยกเลิก', dangerConfirm: true }).then(r => {
+                if (r.isConfirmed) {
+                    const d = loadData();
+                    d.sections.splice(i, 1);
+                    saveData(d, true, true);
+                    renderAdminSections();
+                }
+            });
+        }
+
+        function addSection(type) {
+            const d = loadData();
+            const newSection = {
+                about: { type: 'about', title: 'เกี่ยวกับร้าน', text: 'ข้อความเกี่ยวกับร้าน', headerIndex: -1 },
+                badges: { type: 'badges', title: 'ป้าย', badges: ['ป้ายใหม่'], headerIndex: -1 },
+                image: { type: 'image', title: 'รูปภาพ', imageUrl: 'https://via.placeholder.com/300', headerIndex: -1 },
+                text: { type: 'text', title: 'ข้อความ', content: 'เนื้อหาข้อความ', headerIndex: -1 }
+            };
+            d.sections.push(newSection[type]);
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateGroupsHeader(i, field, value) {
+            const d = loadData();
+            d.groupsHeaders[i][field] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteGroupsHeader(i) {
+            showModal({ icon: 'warning', title: 'ยืนยันการลบ', html: 'จะลบกลุ่มทั้งหมดที่อยู่ใต้หัวข้อนี้ด้วย', confirmText: 'ใช่, ลบเลย', cancelText: 'ยกเลิก', dangerConfirm: true }).then(r => {
+                if (r.isConfirmed) {
+                    const d = loadData();
+                    d.groupsHeaders.splice(i, 1);
+                    d.groupSections = d.groupSections.filter(gs => gs.headerIndex !== i).map(gs => {
+                        if (gs.headerIndex > i) gs.headerIndex--;
+                        return gs;
+                    });
+                    d.sections = d.sections.map(s => {
+                        if (s.headerIndex === i) s.headerIndex = -1;
+                        else if (s.headerIndex > i) s.headerIndex--;
+                        return s;
+                    });
+                    saveData(d, true, true);
+                    renderAdminSections();
+                }
+            });
+        }
+
+        function addGroupsHeader() {
+            const d = loadData();
+            d.groupsHeaders.push({ title: 'หัวข้อใหม่', sub: '' });
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateGroupSectionHeader(i, hi) {
+            const d = loadData();
+            d.groupSections[i].headerIndex = hi;
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateGroupSection(i, field, value) {
+            const d = loadData();
+            d.groupSections[i][field] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteGroupSection(i) {
+            showModal({ icon: 'warning', title: 'ยืนยันการลบ', html: 'คุณแน่ใจหรือไม่?', confirmText: 'ใช่, ลบเลย', cancelText: 'ยกเลิก', dangerConfirm: true }).then(r => {
+                if (r.isConfirmed) {
+                    const d = loadData();
+                    d.groupSections.splice(i, 1);
+                    saveData(d, true, true);
+                    renderAdminSections();
+                }
+            });
+        }
+
+        function addGroupSection() {
+            const d = loadData();
+            d.groupSections.push({
+                headerIndex: d.groupsHeaders.length > 0 ? 0 : -1,
+                title: 'กลุ่มย่อยใหม่',
+                groups: [{ name: 'ชื่อกลุ่ม', tags: [], links: [] }]
+            });
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateGroup(si, gi, field, value) {
+            const d = loadData();
+            d.groupSections[si].groups[gi][field] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteGroup(si, gi) {
+            const d = loadData();
+            d.groupSections[si].groups.splice(gi, 1);
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function addGroup(si) {
+            const d = loadData();
+            d.groupSections[si].groups.push({ name: 'ชื่อกลุ่มใหม่', tags: [], links: [] });
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateGroupTag(si, gi, ti, value) {
+            const d = loadData();
+            d.groupSections[si].groups[gi].tags[ti] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteGroupTag(si, gi, ti) {
+            const d = loadData();
+            d.groupSections[si].groups[gi].tags.splice(ti, 1);
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function addGroupTag(si, gi) {
+            const d = loadData();
+            if (!d.groupSections[si].groups[gi].tags) d.groupSections[si].groups[gi].tags = [];
+            d.groupSections[si].groups[gi].tags.push('แท็กใหม่');
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateGroupLink(si, gi, li, field, value) {
+            const d = loadData();
+            d.groupSections[si].groups[gi].links[li][field] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteGroupLink(si, gi, li) {
+            const d = loadData();
+            d.groupSections[si].groups[gi].links.splice(li, 1);
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function addGroupLink(si, gi) {
+            const d = loadData();
+            if (!d.groupSections[si].groups[gi].links) d.groupSections[si].groups[gi].links = [];
+            d.groupSections[si].groups[gi].links.push({ text: '🔗 ลิงก์ใหม่', url: '#' });
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updateBadge(si, bi, value) {
+            const d = loadData();
+            d.sections[si].badges[bi] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteBadge(si, bi) {
+            const d = loadData();
+            d.sections[si].badges.splice(bi, 1);
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function addBadge(si) {
+            const d = loadData();
+            d.sections[si].badges.push('ป้ายใหม่');
+            saveData(d, true, true);
+            renderAdminSections();
+        }
+
+        function updatePortfolioItem(i, field, value) {
+            const d = loadData();
+            const portfolioSection = d.sections.find(s => s.type === 'portfolio');
+            if (portfolioSection) {
+                portfolioSection.items[i][field] = value;
+                saveData(d, true, true);
+            }
+        }
+
+        function deletePortfolioItem(i) {
+            const d = loadData();
+            const portfolioSection = d.sections.find(s => s.type === 'portfolio');
+            if (portfolioSection) {
+                portfolioSection.items.splice(i, 1);
+                saveData(d, true, true);
+                renderAdminSections();
+            }
+        }
+
+        function addPortfolioItem() {
+            const d = loadData();
+            const portfolioSection = d.sections.find(s => s.type === 'portfolio');
+            if (portfolioSection) {
+                portfolioSection.items.push({ title: 'ชื่อใหม่', image: 'https://via.placeholder.com/150', link: '#' });
+                saveData(d, true, true);
+                renderAdminSections();
+            }
+        }
+
+        function updateCollabItem(i, field, value) {
+            const d = loadData();
+            const collabSection = d.sections.find(s => s.type === 'collab');
+            if (collabSection) {
+                collabSection.items[i][field] = value;
+                saveData(d, true, true);
+            }
+        }
+
+        function deleteCollabItem(i) {
+            const d = loadData();
+            const collabSection = d.sections.find(s => s.type === 'collab');
+            if (collabSection) {
+                collabSection.items.splice(i, 1);
+                saveData(d, true, true);
+                renderAdminSections();
+            }
+        }
+
+        function addCollabItem() {
+            const d = loadData();
+            const collabSection = d.sections.find(s => s.type === 'collab');
+            if (collabSection) {
+                collabSection.items.push({ title: 'ชื่อใหม่', image: 'https://via.placeholder.com/150', link: '#' });
+                saveData(d, true, true);
+                renderAdminSections();
+            }
+        }
+
+        function updateContactBtn(i, field, value) {
+            const d = loadData();
+            d.contact.buttons[i][field] = value;
+            saveData(d, true, true);
+        }
+
+        function deleteContactBtn(i) {
+            showModal({ icon: 'warning', title: 'ยืนยันการลบ', html: 'ลบปุ่มนี้?', confirmText: 'ใช่, ลบเลย', cancelText: 'ยกเลิก', dangerConfirm: true }).then(r => {
+                if (r.isConfirmed) {
+                    const d = loadData();
+                    d.contact.buttons.splice(i, 1);
+                    saveData(d, true, true);
+                    renderContactAdmin();
+                }
+            });
+        }
+
+        function addContactBtn() {
+            const d = loadData();
+            d.contact.buttons.push({ icon: '🔗', text: 'ปุ่มใหม่', link: '#' });
+            saveData(d, true, true);
+            renderContactAdmin();
+        }
+
+        // ==================== SAVE FUNCTIONS ====================
+        function saveHeader() {
+            const d = loadData();
+            d.header = {
+                logoImg: document.getElementById('a-logo-img').value,
+                shopName: document.getElementById('a-shop-name').value,
+                shopDesc: document.getElementById('a-shop-desc').value,
+                statusText: document.getElementById('a-status-text').value,
+                badges: [
+                    document.getElementById('a-badge1').value,
+                    document.getElementById('a-badge2').value,
+                    document.getElementById('a-badge3').value
+                ].filter(b => b),
+                queueLink: document.getElementById('a-queue-link').value
+            };
+            saveData(d, true, true);
+        }
+
+        function savePortfolio() {
+            const d = loadData();
+            const portfolioSection = d.sections.find(s => s.type === 'portfolio');
+            if (portfolioSection) {
+                portfolioSection.title = document.getElementById('a-portfolio-title').value;
+            }
+            saveData(d, true, true);
+        }
+
+        function saveCollab() {
+            const d = loadData();
+            const collabSection = d.sections.find(s => s.type === 'collab');
+            if (collabSection) {
+                collabSection.title = document.getElementById('a-collab-title').value;
+                collabSection.paymentInfo = document.getElementById('a-payment-info').value;
+            }
+            saveData(d, true, true);
+        }
+
+        function saveContact() {
+            showToast('✅ บันทึกส่วนติดต่อเรียบร้อย');
+        }
+
+        function saveFooter() {
+            const d = loadData();
+            d.footer.name = document.getElementById('a-footer-name').value;
+            d.footer.text = document.getElementById('a-footer-text').value;
+            saveData(d, true, true);
+        }
+
+        // ==================== ADMIN AUTH ====================
+        function getCreds() {
+            try {
+                return JSON.parse(localStorage.getItem(ADMIN_CREDS_KEY)) || { user: 'admin', pass: 'fumiko123' };
+            } catch {
+                return { user: 'admin', pass: 'fumiko123' };
+            }
+        }
+
+        function openAdmin() {
+            if (!isAdminLoggedIn) {
+                document.getElementById('login-overlay').classList.add('show');
+                document.getElementById('login-user').focus();
+                return;
+            }
+            const data = loadData();
+            
+            // Fill header fields
             document.getElementById('a-logo-img').value = data.header.logoImg || '';
             document.getElementById('a-shop-name').value = data.header.shopName || '';
             document.getElementById('a-shop-desc').value = data.header.shopDesc || '';
@@ -1175,238 +2328,35 @@
             document.getElementById('a-badge3').value = data.header.badges[2] || '';
             document.getElementById('a-queue-link').value = data.header.queueLink || '';
 
-            // Sections tab - Detail image
-            const sectionsList = document.getElementById('sections-list');
-            sectionsList.innerHTML = `
-                <div class="admin-section">
-                    <h3 style="color: var(--white); margin-bottom:14px;">📸 รูปภาพ Detail</h3>
-                    <input type="text" class="admin-input" placeholder="URL รูปภาพ Detail" value="${data.detailImage}" onchange="updateDetailImage(this.value)">
-                </div>
-            `;
-
-            // Portfolio list
-            const portfolioList = document.getElementById('portfolio-list');
-            portfolioList.innerHTML = '';
-            data.portfolio.forEach((item, index) => {
-                portfolioList.innerHTML += `
-                    <div class="admin-section" style="position:relative;">
-                        <button class="admin-btn-del" onclick="deletePortfolioItem(${index})" style="position:absolute; top:10px; right:10px;"><i class="fas fa-trash"></i></button>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="ชื่อผลงาน" value="${item.title}" onchange="updatePortfolioItem(${index}, 'title', this.value)">
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="URL รูปภาพ" value="${item.image}" onchange="updatePortfolioItem(${index}, 'image', this.value)">
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="ลิงก์" value="${item.link}" onchange="updatePortfolioItem(${index}, 'link', this.value)">
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Collab list
-            const collabList = document.getElementById('collab-list');
-            collabList.innerHTML = '';
-            data.collab.forEach((item, index) => {
-                collabList.innerHTML += `
-                    <div class="admin-section" style="position:relative;">
-                        <button class="admin-btn-del" onclick="deleteCollabItem(${index})" style="position:absolute; top:10px; right:10px;"><i class="fas fa-trash"></i></button>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="ชื่อกลุ่ม" value="${item.title}" onchange="updateCollabItem(${index}, 'title', this.value)">
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="URL รูปภาพ" value="${item.image}" onchange="updateCollabItem(${index}, 'image', this.value)">
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="ลิงก์" value="${item.link}" onchange="updateCollabItem(${index}, 'link', this.value)">
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('a-payment-info').value = data.paymentInfo || '';
-
-            // Contact list
-            const contactList = document.getElementById('contact-list');
-            contactList.innerHTML = '';
-            data.contact.forEach((item, index) => {
-                contactList.innerHTML += `
-                    <div class="admin-section" style="position:relative;">
-                        <button class="admin-btn-del" onclick="deleteContactItem(${index})" style="position:absolute; top:10px; right:10px;"><i class="fas fa-trash"></i></button>
-                        <div class="item-row">
-                            <select class="admin-input" onchange="updateContactItem(${index}, 'type', this.value)" style="max-width:120px;">
-                                <option value="facebook" ${item.type === 'facebook' ? 'selected' : ''}>Facebook</option>
-                                <option value="line" ${item.type === 'line' ? 'selected' : ''}>Line</option>
-                                <option value="instagram" ${item.type === 'instagram' ? 'selected' : ''}>Instagram</option>
-                                <option value="twitter" ${item.type === 'twitter' ? 'selected' : ''}>Twitter</option>
-                                <option value="custom" ${item.type === 'custom' ? 'selected' : ''}>อื่นๆ</option>
-                            </select>
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="ข้อความ" value="${item.text}" onchange="updateContactItem(${index}, 'text', this.value)">
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="admin-input" placeholder="ลิงก์" value="${item.link}" onchange="updateContactItem(${index}, 'link', this.value)">
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Footer
-            document.getElementById('a-footer-copyright').value = data.footer || '';
-
-            // Background emojis
-            const bgEmojisList = document.getElementById('bg-emojis-list');
-            bgEmojisList.innerHTML = '';
-            data.bgEmojis.forEach((emoji, index) => {
-                bgEmojisList.innerHTML += `
-                    <div class="item-row">
-                        <input type="text" class="admin-input" value="${emoji}" onchange="updateBgEmoji(${index}, this.value)" style="flex:1;">
-                        <button class="admin-btn-del" onclick="deleteBgEmoji(${index})"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-            });
-
-            // Google Sheets config
-            const gsConfig = JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || '{}');
-            document.getElementById('gs-webapp-url').value = gsConfig.webAppUrl || GS_WEBAPP_URL;
-            document.getElementById('gs-sheet-id').value = gsConfig.sheetId || '';
-        }
-
-        // ==================== UPDATE FUNCTIONS ====================
-        function saveHeader() {
-            const data = loadData();
-            data.header = {
-                logoImg: document.getElementById('a-logo-img').value,
-                shopName: document.getElementById('a-shop-name').value,
-                shopDesc: document.getElementById('a-shop-desc').value,
-                statusText: document.getElementById('a-status-text').value,
-                badges: [
-                    document.getElementById('a-badge1').value,
-                    document.getElementById('a-badge2').value,
-                    document.getElementById('a-badge3').value
-                ].filter(b => b.trim() !== ''),
-                queueLink: document.getElementById('a-queue-link').value
-            };
-            saveData(data);
-        }
-
-        function updateDetailImage(value) {
-            const data = loadData();
-            data.detailImage = value;
-            saveData(data, false);
-        }
-
-        function updatePortfolioItem(index, field, value) {
-            const data = loadData();
-            data.portfolio[index][field] = value;
-            saveData(data, false);
-        }
-
-        function deletePortfolioItem(index) {
-            showConfirm('ลบผลงานนี้?', 'คุณแน่ใจหรือไม่?', () => {
-                const data = loadData();
-                data.portfolio.splice(index, 1);
-                saveData(data);
-                renderAdminForms();
-            });
-        }
-
-        function addPortfolioItem() {
-            const data = loadData();
-            data.portfolio.push({ title: 'ผลงานใหม่', image: '', link: '#' });
-            saveData(data);
-            renderAdminForms();
-        }
-
-        function updateCollabItem(index, field, value) {
-            const data = loadData();
-            data.collab[index][field] = value;
-            saveData(data, false);
-        }
-
-        function deleteCollabItem(index) {
-            showConfirm('ลบกลุ่มในเครือ?', 'คุณแน่ใจหรือไม่?', () => {
-                const data = loadData();
-                data.collab.splice(index, 1);
-                saveData(data);
-                renderAdminForms();
-            });
-        }
-
-        function addCollabItem() {
-            const data = loadData();
-            data.collab.push({ title: 'กลุ่มใหม่', image: '', link: '#' });
-            saveData(data);
-            renderAdminForms();
-        }
-
-        function updateContactItem(index, field, value) {
-            const data = loadData();
-            data.contact[index][field] = value;
-            saveData(data, false);
-        }
-
-        function deleteContactItem(index) {
-            showConfirm('ลบช่องทางติดต่อ?', 'คุณแน่ใจหรือไม่?', () => {
-                const data = loadData();
-                data.contact.splice(index, 1);
-                saveData(data);
-                renderAdminForms();
-            });
-        }
-
-        function addContactItem() {
-            const data = loadData();
-            data.contact.push({ type: 'custom', text: 'ช่องทางใหม่', link: '#' });
-            saveData(data);
-            renderAdminForms();
-        }
-
-        function saveFooter() {
-            const data = loadData();
-            data.footer = document.getElementById('a-footer-copyright').value;
-            saveData(data);
-        }
-
-        function updateBgEmoji(index, value) {
-            const data = loadData();
-            data.bgEmojis[index] = value;
-            saveData(data, false);
-        }
-
-        function deleteBgEmoji(index) {
-            showConfirm('ลบอิโมจินี้?', 'คุณแน่ใจหรือไม่?', () => {
-                const data = loadData();
-                data.bgEmojis.splice(index, 1);
-                saveData(data);
-                renderAdminForms();
-            });
-        }
-
-        function addBgEmoji() {
-            const data = loadData();
-            data.bgEmojis.push('✨');
-            saveData(data);
-            renderAdminForms();
-        }
-
-        function addSection(type) {
-            if (type === 'about') {
-                const data = loadData();
-                // สามารถเพิ่ม section เพิ่มเติมได้ตามต้องการ
-                showToast('📝 กำลังเพิ่มส่วน...', 'info');
+            // Fill portfolio
+            const portfolioSection = data.sections.find(s => s.type === 'portfolio');
+            if (portfolioSection) {
+                document.getElementById('a-portfolio-title').value = portfolioSection.title || '';
             }
-        }
 
-        // ==================== ADMIN PANEL CONTROLS ====================
-        function openAdmin() {
-            if (!isAdminLoggedIn) {
-                document.getElementById('login-overlay').classList.add('show');
-                document.getElementById('login-user').focus();
-                return;
+            // Fill collab
+            const collabSection = data.sections.find(s => s.type === 'collab');
+            if (collabSection) {
+                document.getElementById('a-collab-title').value = collabSection.title || '';
+                document.getElementById('a-payment-info').value = collabSection.paymentInfo || '';
             }
-            renderAdminForms();
+
+            // Fill footer
+            document.getElementById('a-footer-name').value = data.footer.name || '';
+            document.getElementById('a-footer-text').value = data.footer.text || '';
+
+            // Fill GS config
+            const gs = getGsConfig();
+            document.getElementById('gs-webapp-url').value = gs.webAppUrl || '';
+            document.getElementById('gs-sheet-id').value = gs.sheetId || '';
+
+            // Fill colors
             fillColorAdmin(loadColors());
+
+            // Render admin sections
+            renderAdminSections();
+            renderFontGrid();
+            
             document.getElementById('admin-overlay').classList.add('show');
             startAutoSave();
         }
@@ -1426,75 +2376,44 @@
         }
 
         function doLogin() {
-            const user = document.getElementById('login-user').value;
-            const pass = document.getElementById('login-pass').value;
-            if (user === ADMIN_CREDS.user && pass === ADMIN_CREDS.pass) {
+            const username = document.getElementById('login-user').value.trim();
+            const password = document.getElementById('login-pass').value.trim();
+            const creds = getCreds();
+            if (username === creds.user && password === creds.pass) {
                 closeLogin();
                 isAdminLoggedIn = true;
                 openAdmin();
             } else {
-                showToast('❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', 'error');
+                showModal({ icon: 'error', title: 'เข้าสู่ระบบล้มเหลว', html: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', confirmText: 'ตกลง' });
+                document.getElementById('login-pass').value = '';
             }
         }
 
         function adminLogout() {
             isAdminLoggedIn = false;
             closeAdmin();
-            showToast('👋 ออกจากระบบแล้ว', 'success');
+            showToast('👋 ออกจากระบบสำเร็จ');
         }
 
         function switchTab(tabId, event) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            if (event) event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
+            if (tabId === 'tab-font') renderFontGrid();
+            if (tabId === 'tab-colors') fillColorAdmin(loadColors());
         }
 
         function startAutoSave() {
             if (autoSaveTimer) clearInterval(autoSaveTimer);
             autoSaveTimer = setInterval(() => {
                 if (document.getElementById('admin-overlay').classList.contains('show')) {
-                    // Auto save current data
-                    const data = loadData();
-                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+                    saveData(loadData(), false, false);
                 }
             }, 60000);
         }
 
-        // ==================== MODAL & TOAST ====================
-        function showToast(message, type = 'success', duration = 2000) {
-            const toast = document.getElementById('toast');
-            toast.className = `show ${type}`;
-            toast.innerHTML = message;
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
-        }
-
-        function showConfirm(title, message, onConfirm) {
-            const modal = document.getElementById('cmodal');
-            document.getElementById('cmodal-icon').innerHTML = '❓';
-            document.getElementById('cmodal-title').textContent = title;
-            document.getElementById('cmodal-text').innerHTML = message;
-            document.getElementById('cmodal-actions').innerHTML = `
-                <button class="cmodal-btn cmodal-btn-confirm" onclick="confirmAction(true)">ยืนยัน</button>
-                <button class="cmodal-btn cmodal-btn-cancel" onclick="closeModal()">ยกเลิก</button>
-            `;
-            modal.classList.add('show');
-            window._confirmCallback = onConfirm;
-        }
-
-        function confirmAction(confirmed) {
-            if (confirmed && window._confirmCallback) {
-                window._confirmCallback();
-            }
-            closeModal();
-        }
-
-        function closeModal() {
-            document.getElementById('cmodal').classList.remove('show');
-        }
-
-        // ==================== EXPORT / IMPORT ====================
+        // ==================== EXPORT/IMPORT ====================
         function exportData() {
             const data = loadData();
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1506,7 +2425,6 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('📥 ส่งออกข้อมูลสำเร็จ', 'success');
         }
 
         function importData(event) {
@@ -1516,116 +2434,64 @@
             reader.onload = (e) => {
                 try {
                     const data = JSON.parse(e.target.result);
-                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
-                    showToast('📤 นำเข้าข้อมูลสำเร็จ', 'success');
-                    renderSite();
-                    if (document.getElementById('admin-overlay').classList.contains('show')) {
-                        renderAdminForms();
-                    }
+                    saveData(data, true, true);
+                    showToast('✅ นำเข้าข้อมูลสำเร็จ');
+                    openAdmin();
                 } catch {
-                    showToast('❌ ไฟล์ไม่ถูกต้อง', 'error');
+                    showModal({ icon: 'error', title: 'ไฟล์ไม่ถูกต้อง', html: 'กรุณาเลือกไฟล์ JSON ที่ถูกต้อง', confirmText: 'ตกลง' });
                 }
             };
             reader.readAsText(file);
             event.target.value = '';
         }
 
-        // ==================== GOOGLE SHEETS ====================
-        function getGsConfig() {
-            return JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || '{}');
-        }
-
-        function saveGsConfig() {
-            const config = {
-                webAppUrl: document.getElementById('gs-webapp-url').value,
-                sheetId: document.getElementById('gs-sheet-id').value
-            };
-            localStorage.setItem(GS_CONFIG_KEY, JSON.stringify(config));
-            showToast('💾 บันทึกการตั้งค่าแล้ว', 'success');
-        }
-
-        async function testGsConnection() {
-            const url = document.getElementById('gs-webapp-url').value;
-            if (!url) {
-                showToast('⚠️ กรุณากรอก Web App URL', 'error');
-                return;
-            }
-            try {
-                const response = await fetch(url + '?action=ping');
-                const text = await response.text();
-                showToast('✅ เชื่อมต่อสำเร็จ', 'success');
-            } catch {
-                showToast('❌ ไม่สามารถเชื่อมต่อได้', 'error');
-            }
-        }
-
-        async function loadFromGoogleSheets(showUI = true) {
-            const config = getGsConfig();
-            if (!config.webAppUrl) {
-                if (showUI) showToast('⚠️ ไม่ได้ตั้งค่า Web App URL', 'error');
-                return;
-            }
-            try {
-                const response = await fetch(config.webAppUrl + '?action=getData');
-                const result = await response.json();
-                if (result.status === 'success' && result.data) {
-                    localStorage.setItem(DATA_KEY, JSON.stringify(result.data));
-                    if (showUI) showToast('✅ โหลดข้อมูลสำเร็จ', 'success');
-                    renderSite();
-                    if (document.getElementById('admin-overlay').classList.contains('show')) {
-                        renderAdminForms();
-                    }
-                }
-            } catch {
-                if (showUI) showToast('❌ โหลดข้อมูลล้มเหลว', 'error');
-            }
-        }
-
-        async function syncWithGoogleSheets() {
-            const config = getGsConfig();
-            if (!config.webAppUrl) {
-                showToast('⚠️ ไม่ได้ตั้งค่า Web App URL', 'error');
-                return;
-            }
-            showConfirm('ซิงค์กับ Google Sheets', 'เลือกทิศทางการซิงค์', async () => {
-                try {
-                    const data = loadData();
-                    await fetch(config.webAppUrl, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'updateData', data })
-                    });
-                    showToast('📤 อัปโหลดข้อมูลสำเร็จ', 'success');
-                } catch {
-                    showToast('❌ อัปโหลดล้มเหลว', 'error');
+        function syncWithGoogleSheets() {
+            showModal({
+                icon: 'question',
+                title: 'ซิงค์กับ Google Sheets',
+                html: 'เลือกทิศทางการซิงค์',
+                confirmText: '📤 อัปโหลดไป Sheets',
+                cancelText: '📥 ดาวน์โหลดจาก Sheets'
+            }).then(r => {
+                if (r.isConfirmed) {
+                    saveToGoogleSheets(loadData()).then(() => showToast('✅ อัปโหลดสำเร็จ'));
+                } else if (r.dismiss === 'cancel') {
+                    loadFromGoogleSheets(true);
                 }
             });
         }
 
         // ==================== INIT ====================
         async function initApp() {
-            // Load from Google Sheets if configured
-            await loadFromGoogleSheets(false);
+            applyFont(selectedFont);
+            applyColors(loadColors());
+            
+            const gsUrl = GS_WEBAPP_URL;
+            if (gsUrl && gsUrl !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                await loadFromGoogleSheets(false);
+            }
+            
             renderSite();
             document.getElementById('loading-overlay').classList.add('hidden');
         }
 
-        // Event listeners
+        // Event Listeners
         document.getElementById('admin-fab').addEventListener('click', openAdmin);
-        document.getElementById('login-pass').addEventListener('keypress', (e) => {
+        document.getElementById('login-pass').addEventListener('keypress', e => {
             if (e.key === 'Enter') doLogin();
         });
-        document.getElementById('admin-overlay').addEventListener('click', (e) => {
+        document.getElementById('admin-overlay').addEventListener('click', e => {
             if (e.target === e.currentTarget) closeAdmin();
         });
-        document.getElementById('login-overlay').addEventListener('click', (e) => {
+        document.getElementById('login-overlay').addEventListener('click', e => {
             if (e.target === e.currentTarget) closeLogin();
         });
+        document.getElementById('cmodal').addEventListener('click', e => {
+            if (e.target === e.currentTarget) closeModal();
+        });
 
-        // Start
         initApp();
     </script>
 </body>
-</html>
 
+</html>
