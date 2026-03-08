@@ -8,15 +8,95 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
+            /* ===== สีหลัก ===== */
             --bg: #0B0B2A;
             --main: #BB86FC;
             --dark: #C084FC;
-            --white: #FFFFFF;
-            --glow: rgba(187, 134, 252, 0.5);
             --accent: #FF71CF;
-            --card-bg: rgba(25, 25, 70, 0.45);
+            --white: #FFFFFF;
+            --glow: rgba(187,134,252,0.5);
             --font-main: 'Mitr', sans-serif;
+
+            /* ===== การ์ด / Section ===== */
+            --card-bg: rgba(25,25,70,0.45);
+            --card-border: var(--main);
+            --card-shadow: rgba(187,134,252,0.5);
+            --section-title-color: var(--dark);
+            --divider-color: var(--main);
+
+            /* ===== ข้อความ ===== */
+            --text-body: rgba(255,255,255,0.8);
+            --text-muted: rgba(255,255,255,0.5);
+            --text-faint: rgba(255,255,255,0.4);
+
+            /* ===== ชื่อร้าน / Header ===== */
+            --shop-name-color: #FFFFFF;
+            --status-dot-color: #7cfc00;
+            --badge-border: var(--main);
+            --badge-bg: rgba(255,255,255,0.05);
+
+            /* ===== Tag แนวงาน ===== */
+            --tag-bg: rgba(255,255,255,0.05);
+            --tag-border: var(--main);
+            --tag-hover-bg: rgba(187,134,252,0.2);
+
+            /* ===== Portfolio Card ===== */
+            --port-card-bg: rgba(255,255,255,0.05);
+            --port-card-border: rgba(187,134,252,0.3);
+
+            /* ===== Bulk Note (ราคา) ===== */
+            --bulk-note-bg: rgba(187,134,252,0.1);
+            --bulk-note-border: rgba(187,134,252,0.3);
+            --bulk-note-text: rgba(255,255,255,0.75);
+
+            /* ===== Do/Don't ===== */
+            --do-bg: rgba(0,200,100,0.08);
+            --do-border: rgba(0,200,100,0.3);
+            --do-title: #4cde80;
+            --dont-bg: rgba(255,80,80,0.08);
+            --dont-border: rgba(255,80,80,0.3);
+            --dont-title: #ff6060;
+            --dodont-text: rgba(255,255,255,0.75);
+
+            /* ===== Timeline ===== */
+            --tl-fast-bg: rgba(0,200,100,0.1);
+            --tl-fast-border: rgba(0,200,100,0.3);
+            --tl-fast-num: #4cde80;
+            --tl-mid-bg: rgba(187,134,252,0.1);
+            --tl-mid-border: rgba(187,134,252,0.3);
+            --tl-mid-num: var(--main);
+            --tl-slow-bg: rgba(255,113,207,0.1);
+            --tl-slow-border: rgba(255,113,207,0.3);
+            --tl-slow-num: var(--accent);
+            --tl-label: rgba(255,255,255,0.6);
+
+            /* ===== Payment Chips ===== */
+            --pay-chip-bg: rgba(255,255,255,0.06);
+            --pay-chip-border: rgba(187,134,252,0.3);
+            --pay-chip-text: rgba(255,255,255,0.8);
+
+            /* ===== Group Items ===== */
+            --group-item-bg: rgba(255,255,255,0.04);
+            --group-item-border: rgba(187,134,252,0.25);
+            --group-tag-bg: rgba(187,134,252,0.12);
+            --group-tag-border: rgba(187,134,252,0.3);
+            --group-tag-text: rgba(255,255,255,0.75);
+            --group-link-bg: rgba(255,255,255,0.06);
+            --group-link-border: rgba(187,134,252,0.35);
+            --group-link-text: var(--main);
+            --group-note-text: var(--dark);
+
+            /* ===== หัวข้อกลุ่ม ===== */
+            --gh-deco-color: var(--main);
+            --gh-title-color: var(--main);
+            --gh-sub-color: rgba(255,255,255,0.65);
+            --gh-deco2-color: rgba(255,255,255,0.4);
+
+            /* ===== Footer ===== */
+            --footer-name-color: var(--main);
+            --footer-text-color: rgba(255,255,255,0.4);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-main); }
         body { background: var(--bg); display: flex; justify-content: center; color: #fff; overflow-x: hidden; position: relative; min-height: 100vh; }
         body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 20% 20%, rgba(187,134,252,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(255,113,207,0.04) 0%, transparent 50%); pointer-events: none; z-index: 0; }
@@ -31,7 +111,7 @@
 
         /* Header */
         .header-box { text-align: center; padding: 40px 15px 30px; }
-        h1 { color: var(--white); text-shadow: 2px 2px 8px rgba(187,134,252,0.5); font-size: 32px; margin-bottom: 10px; }
+        h1 { color: var(--shop-name-color); text-shadow: 2px 2px 8px var(--glow); font-size: 32px; margin-bottom: 10px; }
 
         /* Logo */
         .logo-wrapper { position: relative; width: 160px; height: 160px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; animation: float-anim 5s ease-in-out infinite; }
@@ -43,12 +123,12 @@
 
         /* Status badge */
         .status-badge { display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(135deg, rgba(187,134,252,0.3), rgba(255,113,207,0.3)); border: 1px solid var(--main); color: white; font-size: 0.8rem; font-weight: 500; padding: 7px 18px; border-radius: 20px; box-shadow: 0 3px 12px var(--glow); margin-top: 10px; }
-        .status-dot { width: 7px; height: 7px; background: #7cfc00; border-radius: 50%; animation: blink 1.6s ease-in-out infinite; }
+        .status-dot { width: 7px; height: 7px; background: var(--status-dot-color); border-radius: 50%; animation: blink 1.6s ease-in-out infinite; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
 
         /* Badge group */
         .badge-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 15px 0; }
-        .badge { background: rgba(255,255,255,0.05); padding: 5px 12px; border-radius: 15px; font-size: 11px; border: 1px solid var(--main); }
+        .badge { background: var(--badge-bg); padding: 5px 12px; border-radius: 15px; font-size: 11px; border: 1px solid var(--badge-border); }
 
         /* Buttons */
         .btn { display: block; text-align: center; padding: 14px; border-radius: 25px; text-decoration: none; font-weight: 500; transition: 0.3s; cursor: pointer; border: none; font-family: var(--font-main); font-size: 14px; }
@@ -58,23 +138,23 @@
         .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--glow); }
 
         /* Section */
-        .section { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 25px; padding: 25px; margin-bottom: 25px; border: 2px solid var(--main); box-shadow: 0 0 15px var(--glow); animation: slideUp 0.55s ease both; }
+        .section { background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 25px; padding: 25px; margin-bottom: 25px; border: 2px solid var(--card-border); box-shadow: 0 0 15px var(--card-shadow); animation: slideUp 0.55s ease both; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-        .section h2 { color: var(--dark); font-size: 1.1rem; margin-bottom: 15px; }
-        .section-divider { height: 1.5px; background: linear-gradient(to right, var(--main), transparent); opacity: 0.4; border-radius: 2px; margin-bottom: 18px; }
+        .section h2 { color: var(--section-title-color); font-size: 1.1rem; margin-bottom: 15px; }
+        .section-divider { height: 1.5px; background: linear-gradient(to right, var(--divider-color), transparent); opacity: 0.4; border-radius: 2px; margin-bottom: 18px; }
 
         /* Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(187,134,252,0.3); border-radius: 18px; padding: 10px; text-align: center; text-decoration: none; color: #fff; transition: 0.3s; }
+        .card { background: var(--port-card-bg); border: 1px solid var(--port-card-border); border-radius: 18px; padding: 10px; text-align: center; text-decoration: none; color: #fff; transition: 0.3s; }
         .card:hover { transform: translateY(-3px); border-color: var(--main); }
         .card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; margin-bottom: 8px; }
 
         /* About text */
-        .about-text { font-size: 0.88rem; color: rgba(255,255,255,0.8); line-height: 1.9; font-weight: 300; }
+        .about-text { font-size: 0.88rem; color: var(--text-body); line-height: 1.9; font-weight: 300; }
 
         /* Tags */
-        .tag { background: rgba(255,255,255,0.05); border: 1px solid var(--main); padding: 5px 14px; border-radius: 15px; font-size: 11px; cursor: default; transition: 0.2s; display: inline-block; }
-        .tag:hover { background: rgba(187,134,252,0.2); }
+        .tag { background: var(--tag-bg); border: 1px solid var(--tag-border); padding: 5px 14px; border-radius: 15px; font-size: 11px; cursor: default; transition: 0.2s; display: inline-block; }
+        .tag:hover { background: var(--tag-hover-bg); }
         .tags-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
 
         /* Price cards */
@@ -88,43 +168,51 @@
         .price-card.blue { background: linear-gradient(140deg, #60A5FA 0%, #3B82F6 60%, #1D4ED8 100%); box-shadow: 0 6px 20px rgba(59,130,246,0.35); }
         .price-card.green { background: linear-gradient(140deg, #4ADE80 0%, #22C55E 60%, #15803D 100%); box-shadow: 0 6px 20px rgba(34,197,94,0.35); }
         .price-card::before { content: ''; position: absolute; top: -30%; left: -20%; width: 55%; height: 55%; background: rgba(255,255,255,0.2); border-radius: 50%; pointer-events: none; }
-        .bulk-note { background: rgba(187,134,252,0.1); border: 1px solid rgba(187,134,252,0.3); border-radius: 14px; padding: 12px 16px; font-size: 0.82rem; color: rgba(255,255,255,0.75); text-align: center; line-height: 1.7; }
+        .price-card-type { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.88); margin-bottom: 4px; }
+        .price-card-amount { font-size: 2.4rem; font-weight: 600; color: white; line-height: 1; }
+        .price-card-unit { font-size: 0.72rem; color: rgba(255,255,255,0.78); margin-top: 2px; }
+        .bulk-note { background: var(--bulk-note-bg); border: 1px solid var(--bulk-note-border); border-radius: 14px; padding: 12px 16px; font-size: 0.82rem; color: var(--bulk-note-text); text-align: center; line-height: 1.7; }
+        .contact-note { text-align: center; margin-top: 13px; font-size: 0.81rem; color: var(--text-muted); }
 
         /* Do/Don't */
         .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .do-box { background: rgba(0,200,100,0.08); border: 1.5px solid rgba(0,200,100,0.3); border-radius: 16px; padding: 14px; }
-        .dont-box { background: rgba(255,80,80,0.08); border: 1.5px solid rgba(255,80,80,0.3); border-radius: 16px; padding: 14px; }
-        .do-box h4 { font-size: 0.8rem; color: #4cde80; margin-bottom: 8px; }
-        .dont-box h4 { font-size: 0.8rem; color: #ff6060; margin-bottom: 8px; }
-        .do-box li, .dont-box li { font-size: 0.78rem; color: rgba(255,255,255,0.75); line-height: 1.8; margin-left: 14px; }
+        .do-box { background: var(--do-bg); border: 1.5px solid var(--do-border); border-radius: 16px; padding: 14px; }
+        .dont-box { background: var(--dont-bg); border: 1.5px solid var(--dont-border); border-radius: 16px; padding: 14px; }
+        .do-box h4 { font-size: 0.8rem; color: var(--do-title); margin-bottom: 8px; }
+        .dont-box h4 { font-size: 0.8rem; color: var(--dont-title); margin-bottom: 8px; }
+        .do-box li, .dont-box li { font-size: 0.78rem; color: var(--dodont-text); line-height: 1.8; margin-left: 14px; }
 
         /* Steps */
         .step-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
         .step-num { min-width: 32px; height: 32px; background: linear-gradient(135deg, var(--main), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: white; box-shadow: 0 3px 10px var(--glow); flex-shrink: 0; }
-        .step-text { font-size: 0.86rem; color: rgba(255,255,255,0.8); line-height: 1.75; padding-top: 5px; }
+        .step-text { font-size: 0.86rem; color: var(--text-body); line-height: 1.75; padding-top: 5px; }
 
         /* Timeline */
         .tl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 14px; }
         .tl-item { border-radius: 14px; padding: 12px 8px; text-align: center; }
-        .tl-item.fast { background: rgba(0,200,100,0.1); border: 1.5px solid rgba(0,200,100,0.3); }
-        .tl-item.mid { background: rgba(187,134,252,0.1); border: 1.5px solid rgba(187,134,252,0.3); }
-        .tl-item.slow { background: rgba(255,113,207,0.1); border: 1.5px solid rgba(255,113,207,0.3); }
-        .tl-label { font-size: 0.7rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+        .tl-item.fast { background: var(--tl-fast-bg); border: 1.5px solid var(--tl-fast-border); }
+        .tl-item.mid { background: var(--tl-mid-bg); border: 1.5px solid var(--tl-mid-border); }
+        .tl-item.slow { background: var(--tl-slow-bg); border: 1.5px solid var(--tl-slow-border); }
+        .tl-item.fast .tl-num { color: var(--tl-fast-num); }
+        .tl-item.mid .tl-num { color: var(--tl-mid-num); }
+        .tl-item.slow .tl-num { color: var(--tl-slow-num); }
+        .tl-num { font-size: 1.3rem; font-weight: 600; }
+        .tl-label { font-size: 0.7rem; color: var(--tl-label); margin-top: 4px; }
 
         /* Payment chips */
-        .pay-chip { background: rgba(255,255,255,0.06); border: 1px solid rgba(187,134,252,0.3); border-radius: 12px; padding: 8px 14px; font-size: 0.82rem; color: rgba(255,255,255,0.8); display: inline-flex; align-items: center; gap: 6px; }
+        .pay-chip { background: var(--pay-chip-bg); border: 1px solid var(--pay-chip-border); border-radius: 12px; padding: 8px 14px; font-size: 0.82rem; color: var(--pay-chip-text); display: inline-flex; align-items: center; gap: 6px; }
 
         /* Group items */
-        .group-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(187,134,252,0.25); border-radius: 18px; padding: 16px; margin-bottom: 14px; transition: 0.2s; }
+        .group-item { background: var(--group-item-bg); border: 1px solid var(--group-item-border); border-radius: 18px; padding: 16px; margin-bottom: 14px; transition: 0.2s; }
         .group-item:hover { transform: translateY(-2px); border-color: var(--main); box-shadow: 0 4px 15px var(--glow); }
         .group-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .group-name { font-size: 0.88rem; font-weight: 500; flex: 1; }
         .group-price { background: linear-gradient(135deg, var(--main), var(--accent)); color: white; font-size: 0.85rem; font-weight: 600; padding: 4px 12px; border-radius: 20px; box-shadow: 0 2px 8px var(--glow); white-space: nowrap; }
         .group-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
-        .group-tag { background: rgba(187,134,252,0.12); border: 1px solid rgba(187,134,252,0.3); border-radius: 12px; padding: 3px 10px; font-size: 0.75rem; color: rgba(255,255,255,0.75); }
-        .group-note { font-size: 0.78rem; color: var(--dark); margin: 6px 0; opacity: 0.85; }
+        .group-tag { background: var(--group-tag-bg); border: 1px solid var(--group-tag-border); border-radius: 12px; padding: 3px 10px; font-size: 0.75rem; color: var(--group-tag-text); }
+        .group-note { font-size: 0.78rem; color: var(--group-note-text); margin: 6px 0; opacity: 0.85; }
         .group-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-        .group-link { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.06); border: 1px solid rgba(187,134,252,0.35); border-radius: 10px; padding: 5px 12px; font-size: 0.76rem; color: var(--main); text-decoration: none; transition: 0.2s; }
+        .group-link { display: inline-flex; align-items: center; gap: 5px; background: var(--group-link-bg); border: 1px solid var(--group-link-border); border-radius: 10px; padding: 5px 12px; font-size: 0.76rem; color: var(--group-link-text); text-decoration: none; transition: 0.2s; }
         .group-link:hover { background: rgba(187,134,252,0.2); color: white; }
 
         /* See all button */
@@ -150,8 +238,8 @@
 
         /* Footer */
         .footer { text-align: center; padding: 30px 20px 20px; }
-        .footer .shop-name { font-size: 1.2rem; font-weight: 600; color: var(--main); text-shadow: 0 0 15px var(--glow); margin-bottom: 8px; }
-        .footer .footer-text { font-size: 0.76rem; color: rgba(255,255,255,0.4); line-height: 1.8; }
+        .footer .shop-name { font-size: 1.2rem; font-weight: 600; color: var(--footer-name-color); text-shadow: 0 0 15px var(--glow); margin-bottom: 8px; }
+        .footer .footer-text { font-size: 0.76rem; color: var(--footer-text-color); line-height: 1.8; }
 
         /* Loading */
         #loading-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
@@ -252,10 +340,10 @@
 
         /* Groups Header Title in main page */
         .groups-header-section { text-align: center; padding: 30px 20px 20px; }
-        .groups-header-deco { font-size: 0.9rem; color: var(--main); letter-spacing: 8px; margin-bottom: 10px; opacity: 0.7; }
-        .groups-header-title { font-size: 2.2rem; font-weight: 600; color: var(--main); text-shadow: 0 0 20px var(--glow); animation: float-anim 5s ease-in-out infinite; letter-spacing: 1px; }
-        .groups-header-sub { font-size: 1rem; color: rgba(255,255,255,0.65); margin-top: 8px; line-height: 1.7; }
-        .groups-header-deco2 { font-size: 0.82rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; margin-top: 8px; }
+        .groups-header-deco { font-size: 0.9rem; color: var(--gh-deco-color); letter-spacing: 8px; margin-bottom: 10px; opacity: 0.7; }
+        .groups-header-title { font-size: 2.2rem; font-weight: 600; color: var(--gh-title-color); text-shadow: 0 0 20px var(--glow); animation: float-anim 5s ease-in-out infinite; letter-spacing: 1px; }
+        .groups-header-sub { font-size: 1rem; color: var(--gh-sub-color); margin-top: 8px; line-height: 1.7; }
+        .groups-header-deco2 { font-size: 0.82rem; color: var(--gh-deco2-color); letter-spacing: 1px; margin-top: 8px; }
 
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -388,17 +476,73 @@
 
         <!-- Tab: Colors -->
         <div id="tab-colors" class="tab-content">
-            <div class="info-box"><i class="fas fa-info-circle"></i> คลิกที่กล่องสีหรือพิมพ์ค่า HEX เพื่อเปลี่ยนสี</div>
+            <div class="info-box"><i class="fas fa-info-circle"></i> ปรับสีได้ทุกส่วน — คลิกกล่องสีหรือพิมพ์ HEX แล้วกด <b>บันทึกสี</b></div>
+
             <div class="admin-section">
-                <div class="admin-section-title">สีหลัก (CSS Variables)</div>
-                <div class="color-row"><label>--main (สีม่วงหลัก)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-main" class="color-swatch" onchange="syncColorText('main',this.value)"><input type="text" id="color-main-text" class="color-text" oninput="syncColorPicker('main',this.value)"></div></div>
-                <div class="color-row"><label>--dark (สีม่วงรอง)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-dark" class="color-swatch" onchange="syncColorText('dark',this.value)"><input type="text" id="color-dark-text" class="color-text" oninput="syncColorPicker('dark',this.value)"></div></div>
-                <div class="color-row"><label>--accent (สีชมพู)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-accent" class="color-swatch" onchange="syncColorText('accent',this.value)"><input type="text" id="color-accent-text" class="color-text" oninput="syncColorPicker('accent',this.value)"></div></div>
-                <div class="color-row"><label>--bg (พื้นหลัง)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-bg" class="color-swatch" onchange="syncColorText('bg',this.value)"><input type="text" id="color-bg-text" class="color-text" oninput="syncColorPicker('bg',this.value)"></div></div>
+                <div class="admin-section-title">🎨 สีหลัก (Theme)</div>
+                <div class="color-row"><label>สีหลัก (--main)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-main" class="color-swatch" onchange="syncColorText('main',this.value)"><input type="text" id="color-main-text" class="color-text" oninput="syncColorPicker('main',this.value)"></div></div>
+                <div class="color-row"><label>สีรอง (--dark)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-dark" class="color-swatch" onchange="syncColorText('dark',this.value)"><input type="text" id="color-dark-text" class="color-text" oninput="syncColorPicker('dark',this.value)"></div></div>
+                <div class="color-row"><label>สีเน้น (--accent)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-accent" class="color-swatch" onchange="syncColorText('accent',this.value)"><input type="text" id="color-accent-text" class="color-text" oninput="syncColorPicker('accent',this.value)"></div></div>
+                <div class="color-row"><label>พื้นหลัง (--bg)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-bg" class="color-swatch" onchange="syncColorText('bg',this.value)"><input type="text" id="color-bg-text" class="color-text" oninput="syncColorPicker('bg',this.value)"></div></div>
             </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">🃏 การ์ด / Section</div>
+                <div class="color-row"><label>พื้นหลังการ์ด</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-card-bg-hex" class="color-swatch" onchange="syncColorTextRaw('card-bg',this.value)"><input type="text" id="color-card-bg-text" class="color-text" placeholder="rgba(...)" oninput="syncVarDirect('card-bg',this.value)"></div></div>
+                <div class="color-row"><label>ขอบการ์ด</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-card-border" class="color-swatch" onchange="syncColorText('card-border',this.value)"><input type="text" id="color-card-border-text" class="color-text" oninput="syncColorPicker('card-border',this.value)"></div></div>
+                <div class="color-row"><label>หัวข้อ Section</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-section-title-color" class="color-swatch" onchange="syncColorText('section-title-color',this.value)"><input type="text" id="color-section-title-color-text" class="color-text" oninput="syncColorPicker('section-title-color',this.value)"></div></div>
+                <div class="color-row"><label>เส้นคั่น (Divider)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-divider-color" class="color-swatch" onchange="syncColorText('divider-color',this.value)"><input type="text" id="color-divider-color-text" class="color-text" oninput="syncColorPicker('divider-color',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">✏️ ข้อความ</div>
+                <div class="color-row"><label>ชื่อร้าน (h1)</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-shop-name-color" class="color-swatch" onchange="syncColorText('shop-name-color',this.value)"><input type="text" id="color-shop-name-color-text" class="color-text" oninput="syncColorPicker('shop-name-color',this.value)"></div></div>
+                <div class="color-row"><label>ข้อความทั่วไป</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-text-body-hex" class="color-swatch" onchange="syncColorTextRaw('text-body',this.value)"><input type="text" id="color-text-body-text" class="color-text" placeholder="rgba(...)" oninput="syncVarDirect('text-body',this.value)"></div></div>
+                <div class="color-row"><label>ข้อความจาง</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-text-muted-hex" class="color-swatch" onchange="syncColorTextRaw('text-muted',this.value)"><input type="text" id="color-text-muted-text" class="color-text" placeholder="rgba(...)" oninput="syncVarDirect('text-muted',this.value)"></div></div>
+                <div class="color-row"><label>จุดสถานะออนไลน์</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-status-dot-color" class="color-swatch" onchange="syncColorText('status-dot-color',this.value)"><input type="text" id="color-status-dot-color-text" class="color-text" oninput="syncColorPicker('status-dot-color',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">🏷️ Tag / Badge</div>
+                <div class="color-row"><label>Badge พื้นหลัง</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-badge-border" class="color-swatch" onchange="syncColorText('badge-border',this.value)"><input type="text" id="color-badge-border-text" class="color-text" oninput="syncColorPicker('badge-border',this.value)"></div></div>
+                <div class="color-row"><label>Tag ขอบ</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-tag-border" class="color-swatch" onchange="syncColorText('tag-border',this.value)"><input type="text" id="color-tag-border-text" class="color-text" oninput="syncColorPicker('tag-border',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">✅ รับ / ❌ ไม่รับ</div>
+                <div class="color-row"><label>✅ ชื่อหัวข้อ "รับทำ"</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-do-title" class="color-swatch" onchange="syncColorText('do-title',this.value)"><input type="text" id="color-do-title-text" class="color-text" oninput="syncColorPicker('do-title',this.value)"></div></div>
+                <div class="color-row"><label>❌ ชื่อหัวข้อ "ไม่รับ"</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-dont-title" class="color-swatch" onchange="syncColorText('dont-title',this.value)"><input type="text" id="color-dont-title-text" class="color-text" oninput="syncColorPicker('dont-title',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">⏱ Timeline</div>
+                <div class="color-row"><label>เร็ว — สีตัวเลข</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-tl-fast-num" class="color-swatch" onchange="syncColorText('tl-fast-num',this.value)"><input type="text" id="color-tl-fast-num-text" class="color-text" oninput="syncColorPicker('tl-fast-num',this.value)"></div></div>
+                <div class="color-row"><label>กลาง — สีตัวเลข</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-tl-mid-num" class="color-swatch" onchange="syncColorText('tl-mid-num',this.value)"><input type="text" id="color-tl-mid-num-text" class="color-text" oninput="syncColorPicker('tl-mid-num',this.value)"></div></div>
+                <div class="color-row"><label>ช้า — สีตัวเลข</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-tl-slow-num" class="color-swatch" onchange="syncColorText('tl-slow-num',this.value)"><input type="text" id="color-tl-slow-num-text" class="color-text" oninput="syncColorPicker('tl-slow-num',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">👥 กลุ่ม / Group Items</div>
+                <div class="color-row"><label>ข้อความลิงก์กลุ่ม</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-group-link-text" class="color-swatch" onchange="syncColorText('group-link-text',this.value)"><input type="text" id="color-group-link-text-text" class="color-text" oninput="syncColorPicker('group-link-text',this.value)"></div></div>
+                <div class="color-row"><label>สี Note กลุ่ม</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-group-note-text" class="color-swatch" onchange="syncColorText('group-note-text',this.value)"><input type="text" id="color-group-note-text-text" class="color-text" oninput="syncColorPicker('group-note-text',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">📌 หัวข้อกลุ่ม (Groups Header)</div>
+                <div class="color-row"><label>เครื่องหมาย Deco</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-gh-deco-color" class="color-swatch" onchange="syncColorText('gh-deco-color',this.value)"><input type="text" id="color-gh-deco-color-text" class="color-text" oninput="syncColorPicker('gh-deco-color',this.value)"></div></div>
+                <div class="color-row"><label>ชื่อหัวข้อกลุ่ม</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-gh-title-color" class="color-swatch" onchange="syncColorText('gh-title-color',this.value)"><input type="text" id="color-gh-title-color-text" class="color-text" oninput="syncColorPicker('gh-title-color',this.value)"></div></div>
+                <div class="color-row"><label>คำอธิบายกลุ่ม</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-gh-sub-color-hex" class="color-swatch" onchange="syncColorTextRaw('gh-sub-color',this.value)"><input type="text" id="color-gh-sub-color-text" class="color-text" placeholder="rgba(...)" oninput="syncVarDirect('gh-sub-color',this.value)"></div></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="admin-section-title">🔻 Footer</div>
+                <div class="color-row"><label>ชื่อร้าน Footer</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-footer-name-color" class="color-swatch" onchange="syncColorText('footer-name-color',this.value)"><input type="text" id="color-footer-name-color-text" class="color-text" oninput="syncColorPicker('footer-name-color',this.value)"></div></div>
+                <div class="color-row"><label>ข้อความ Footer</label><div style="display:flex;gap:6px;align-items:center;"><input type="color" id="color-footer-text-color-hex" class="color-swatch" onchange="syncColorTextRaw('footer-text-color',this.value)"><input type="text" id="color-footer-text-color-text" class="color-text" placeholder="rgba(...)" oninput="syncVarDirect('footer-text-color',this.value)"></div></div>
+            </div>
+
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <button onclick="saveColors()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกสี</button>
-                <button onclick="resetColors()" class="admin-btn-add"><i class="fas fa-undo"></i> รีเซ็ต</button>
+                <button onclick="saveColors()" class="admin-btn-save"><i class="fas fa-save"></i> บันทึกสีทั้งหมด</button>
+                <button onclick="resetColors()" class="admin-btn-add"><i class="fas fa-undo"></i> รีเซ็ตค่าเริ่มต้น</button>
             </div>
         </div>
 
@@ -499,7 +643,7 @@
 
 <script>
 // ===================== CONFIG =====================
-const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyUT_2kKS5uF27I_O22A5rTwkxPUnZdVNbeLXyYjvY76tAGuVWMZ-DsSRoZLQKYiNQ/exec'; // ใส่ Web App URL ของคุณที่นี่
+const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxxe7M8wVNPXM_ZrRFmWPCuzUjhw6_xl3LyBNmz_YcITQTmDjTT6NwGD6iwH6jSUN0/exec'; // ใส่ Web App URL ของคุณที่นี่
 const DATA_KEY = 'fumiko_data';
 const COLOR_KEY = 'fumiko_colors';
 const FONT_KEY = 'fumiko_font';
@@ -510,41 +654,130 @@ let isAdminLoggedIn = false;
 let autoSaveTimer = null;
 
 // ===================== DEFAULT COLORS =====================
-const DEFAULT_COLORS = { main: '#BB86FC', dark: '#C084FC', accent: '#FF71CF', bg: '#0B0B2A' };
+const DEFAULT_COLORS = {
+    // Theme
+    main: '#BB86FC', dark: '#C084FC', accent: '#FF71CF', bg: '#0B0B2A',
+    // Card
+    'card-border': '#BB86FC',
+    'section-title-color': '#C084FC',
+    'divider-color': '#BB86FC',
+    // Text
+    'shop-name-color': '#FFFFFF',
+    'status-dot-color': '#7cfc00',
+    'badge-border': '#BB86FC',
+    'tag-border': '#BB86FC',
+    // Do/Dont
+    'do-title': '#4cde80',
+    'dont-title': '#ff6060',
+    // Timeline
+    'tl-fast-num': '#4cde80',
+    'tl-mid-num': '#BB86FC',
+    'tl-slow-num': '#FF71CF',
+    // Group
+    'group-link-text': '#BB86FC',
+    'group-note-text': '#C084FC',
+    // Groups Header
+    'gh-deco-color': '#BB86FC',
+    'gh-title-color': '#BB86FC',
+    // Footer
+    'footer-name-color': '#BB86FC',
+    // RGBA values (stored as string)
+    'card-bg': 'rgba(25,25,70,0.45)',
+    'text-body': 'rgba(255,255,255,0.8)',
+    'text-muted': 'rgba(255,255,255,0.5)',
+    'gh-sub-color': 'rgba(255,255,255,0.65)',
+    'footer-text-color': 'rgba(255,255,255,0.4)',
+};
+
+// HEX-only vars (can use color picker directly)
+const HEX_VARS = ['main','dark','accent','bg','card-border','section-title-color','divider-color',
+    'shop-name-color','status-dot-color','badge-border','tag-border','do-title','dont-title',
+    'tl-fast-num','tl-mid-num','tl-slow-num','group-link-text','group-note-text',
+    'gh-deco-color','gh-title-color','footer-name-color'];
 
 function loadColors() {
     try { return { ...DEFAULT_COLORS, ...JSON.parse(localStorage.getItem(COLOR_KEY) || '{}') }; }
     catch { return { ...DEFAULT_COLORS }; }
 }
 function applyColors(c) {
-    document.documentElement.style.setProperty('--main', c.main || DEFAULT_COLORS.main);
-    document.documentElement.style.setProperty('--dark', c.dark || DEFAULT_COLORS.dark);
-    document.documentElement.style.setProperty('--accent', c.accent || DEFAULT_COLORS.accent);
-    document.documentElement.style.setProperty('--bg', c.bg || DEFAULT_COLORS.bg);
-    document.documentElement.style.setProperty('--glow', hexToRgba(c.main || DEFAULT_COLORS.main, 0.5));
+    const R = document.documentElement.style;
+    Object.keys(DEFAULT_COLORS).forEach(k => {
+        const val = c[k] || DEFAULT_COLORS[k];
+        R.setProperty('--' + k, val);
+    });
+    // Special: glow derived from main
+    const m = c.main || DEFAULT_COLORS.main;
+    R.setProperty('--glow', hexToRgba(m.startsWith('#') ? m : DEFAULT_COLORS.main, 0.5));
     document.body.style.background = c.bg || DEFAULT_COLORS.bg;
 }
 function hexToRgba(hex, a) {
+    if (!hex || !hex.startsWith('#') || hex.length < 7) return `rgba(187,134,252,${a})`;
     const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
     return `rgba(${r},${g},${b},${a})`;
 }
 function saveColors() {
     const c = {};
-    ['main','dark','accent','bg'].forEach(k => { const el = document.getElementById('color-'+k+'-text'); if(el) c[k] = el.value; });
+    HEX_VARS.forEach(k => {
+        const el = document.getElementById('color-' + k + '-text') || document.getElementById('color-' + k + '-text');
+        if (el) c[k] = el.value;
+    });
+    // RGBA vars
+    ['card-bg','text-body','text-muted','gh-sub-color','footer-text-color'].forEach(k => {
+        const el = document.getElementById('color-' + k + '-text');
+        if (el) c[k] = el.value;
+    });
     localStorage.setItem(COLOR_KEY, JSON.stringify(c));
     applyColors(c);
-    showToast('🎨 บันทึกสีเรียบร้อย');
+    showToast('🎨 บันทึกสีทั้งหมดเรียบร้อย');
 }
-function resetColors() { localStorage.removeItem(COLOR_KEY); applyColors(DEFAULT_COLORS); fillColorAdmin(DEFAULT_COLORS); showToast('↩️ รีเซ็ตสีแล้ว'); }
+function resetColors() {
+    localStorage.removeItem(COLOR_KEY);
+    applyColors(DEFAULT_COLORS);
+    fillColorAdmin(DEFAULT_COLORS);
+    showToast('↩️ รีเซ็ตสีเป็นค่าเริ่มต้นแล้ว');
+}
 function fillColorAdmin(c) {
-    ['main','dark','accent','bg'].forEach(k => {
-        const p = document.getElementById('color-'+k), t = document.getElementById('color-'+k+'-text');
-        const v = c[k] || DEFAULT_COLORS[k];
-        if(p) p.value = v; if(t) t.value = v;
+    HEX_VARS.forEach(k => {
+        const picker = document.getElementById('color-' + k);
+        const text = document.getElementById('color-' + k + '-text');
+        const val = c[k] || DEFAULT_COLORS[k];
+        if (picker && val && val.startsWith('#')) picker.value = val;
+        if (text) text.value = val;
+    });
+    // RGBA vars — only fill text, skip picker
+    ['card-bg','text-body','text-muted','gh-sub-color','footer-text-color'].forEach(k => {
+        const text = document.getElementById('color-' + k + '-text');
+        if (text) text.value = c[k] || DEFAULT_COLORS[k];
     });
 }
-function syncColorText(k, v) { const el = document.getElementById('color-'+k+'-text'); if(el) el.value = v; document.documentElement.style.setProperty('--'+k, v); }
-function syncColorPicker(k, v) { if(/^#[0-9A-Fa-f]{6}$/.test(v)) { const el = document.getElementById('color-'+k); if(el) el.value = v; document.documentElement.style.setProperty('--'+k, v); } }
+// Sync hex picker → text input + apply live
+function syncColorText(k, v) {
+    const el = document.getElementById('color-' + k + '-text');
+    if (el) el.value = v;
+    document.documentElement.style.setProperty('--' + k, v);
+    if (k === 'main') document.documentElement.style.setProperty('--glow', hexToRgba(v, 0.5));
+    if (k === 'bg') document.body.style.background = v;
+}
+// Sync text input → hex picker + apply live (HEX only)
+function syncColorPicker(k, v) {
+    if (/^#[0-9A-Fa-f]{6}$/.test(v)) {
+        const el = document.getElementById('color-' + k);
+        if (el) el.value = v;
+        document.documentElement.style.setProperty('--' + k, v);
+        if (k === 'main') document.documentElement.style.setProperty('--glow', hexToRgba(v, 0.5));
+        if (k === 'bg') document.body.style.background = v;
+    }
+}
+// For RGBA vars: picker → convert hex to rgba-ish text display
+function syncColorTextRaw(k, v) {
+    const el = document.getElementById('color-' + k + '-text');
+    if (el) el.value = v;
+    document.documentElement.style.setProperty('--' + k, v);
+}
+// For RGBA vars: text input directly applies
+function syncVarDirect(k, v) {
+    document.documentElement.style.setProperty('--' + k, v);
+}
 
 // ===================== FONTS =====================
 const THAI_FONTS = [
@@ -745,7 +978,7 @@ function renderSite(){
     const colsClass=btns.length===1?'cols-1':btns.length>=3?'cols-3':'cols-2';
     html+=`<div class="section"><h2>💌 ติดต่อสั่งงาน</h2><div class="section-divider"></div>
       <div class="contact-btns ${colsClass}">${btns.map(btn=>{const st=getStyleById(btn.style);return`<a href="${btn.link}" target="_blank" class="contact-btn ${st.cssClass}">${btn.icon} ${btn.text}</a>`;}).join('')}</div>
-      ${data.contact.note?`<div style="text-align:center;margin-top:13px;font-size:0.81rem;color:rgba(255,255,255,0.5);">${data.contact.note}</div>`:''}
+      ${data.contact.note?`<div class="contact-note">${data.contact.note}</div>`:''}
     </div>`;
     // Footer
     html+=`<div class="footer"><div class="shop-name">${data.footer.name}</div>${data.footer.text?`<div class="footer-text">${data.footer.text}</div>`:''}</div>`;
@@ -756,9 +989,9 @@ function renderSection(s){
     switch(s.type){
         case 'about': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><div class="about-text">${s.text}</div></div>`;
         case 'tags': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><div class="tags-wrap">${(s.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`;
-        case 'price': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><div class="price-grid">${(s.priceCards||[]).map(c=>`<div class="price-card ${c.class||'purple'}"><div style="font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.88);margin-bottom:4px;">${c.type}</div><div style="font-size:2.4rem;font-weight:600;color:white;line-height:1;">${c.amount}</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.78);margin-top:2px;">${c.unit}</div></div>`).join('')}</div>${s.bulkNote?`<div class="bulk-note">${s.bulkNote}</div>`:''}</div>`;
+        case 'price': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><div class="price-grid">${(s.priceCards||[]).map(c=>`<div class="price-card ${c.class||'purple'}"><div class="price-card-type">${c.type}</div><div class="price-card-amount">${c.amount}</div><div class="price-card-unit">${c.unit}</div></div>`).join('')}</div>${s.bulkNote?`<div class="bulk-note">${s.bulkNote}</div>`:''}</div>`;
         case 'dodont': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><div class="do-dont-grid"><div class="do-box"><h4>✅ รับทำ</h4><ul>${(s.doList||[]).map(i=>`<li>${i}</li>`).join('')}</ul></div><div class="dont-box"><h4>❌ ไม่รับ</h4><ul>${(s.dontList||[]).map(i=>`<li>${i}</li>`).join('')}</ul></div></div></div>`;
-        case 'steps': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div>${(s.steps||[]).map((step,i)=>`<div class="step-row"><div class="step-num">${i+1}</div><div class="step-text">${step}</div></div>`).join('')}${s.timeline?`<div style="margin-top:14px;"><div style="font-size:0.76rem;color:rgba(255,255,255,0.5);margin-bottom:10px;font-weight:500;">⏱ ระยะเวลา</div><div class="tl-grid"><div class="tl-item fast"><div style="font-size:1.3rem;font-weight:600;color:#4cde80;">${s.timeline.fast.day}</div><div class="tl-label">${s.timeline.fast.label}</div></div><div class="tl-item mid"><div style="font-size:1.3rem;font-weight:600;color:var(--main);">${s.timeline.mid.day}</div><div class="tl-label">${s.timeline.mid.label}</div></div><div class="tl-item slow"><div style="font-size:1.3rem;font-weight:600;color:var(--accent);">${s.timeline.slow.day}</div><div class="tl-label">${s.timeline.slow.label}</div></div></div></div>`:''}${(s.payments&&s.payments.length)?`<div style="margin-top:14px;"><div style="font-size:0.76rem;color:rgba(255,255,255,0.5);margin-bottom:9px;font-weight:500;">💳 ช่องทางชำระเงิน</div><div style="display:flex;gap:10px;flex-wrap:wrap;">${s.payments.map(p=>`<div class="pay-chip">${p}</div>`).join('')}</div></div>`:''}</div>`;
+        case 'steps': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div>${(s.steps||[]).map((step,i)=>`<div class="step-row"><div class="step-num">${i+1}</div><div class="step-text">${step}</div></div>`).join('')}${s.timeline?`<div style="margin-top:14px;"><div style="font-size:0.76rem;color:var(--text-muted);margin-bottom:10px;font-weight:500;">⏱ ระยะเวลา</div><div class="tl-grid"><div class="tl-item fast"><div class="tl-num">${s.timeline.fast.day}</div><div class="tl-label">${s.timeline.fast.label}</div></div><div class="tl-item mid"><div class="tl-num">${s.timeline.mid.day}</div><div class="tl-label">${s.timeline.mid.label}</div></div><div class="tl-item slow"><div class="tl-num">${s.timeline.slow.day}</div><div class="tl-label">${s.timeline.slow.label}</div></div></div></div>`:''}${(s.payments&&s.payments.length)?`<div style="margin-top:14px;"><div style="font-size:0.76rem;color:var(--text-muted);margin-bottom:9px;font-weight:500;">💳 ช่องทางชำระเงิน</div><div style="display:flex;gap:10px;flex-wrap:wrap;">${s.payments.map(p=>`<div class="pay-chip">${p}</div>`).join('')}</div></div>`:''}</div>`;
         case 'portfolio': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><div class="grid">${(s.items||[]).map(item=>`<a href="${item.link||'#'}" target="_blank" class="card"><img src="${item.img}"><span style="font-size:12px;">${item.label}</span></a>`).join('')}</div>${s.mainBtnText?`<a href="${s.mainBtnLink||'#'}" class="btn btn-main">${s.mainBtnText}</a>`:''}</div>`;
         case 'image': return `<div class="section"><h2>${s.title}</h2><div class="section-divider"></div><img src="${s.imgUrl}" alt="${s.title}" style="width:100%;border-radius:15px;border:1px solid var(--main);"></div>`;
         default: return '';
