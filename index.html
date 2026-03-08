@@ -348,6 +348,10 @@
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* Admin del button */
+        .admin-btn-del { background: linear-gradient(135deg, rgba(255,80,80,0.15), rgba(200,20,20,0.15)); border: 1.5px solid rgba(255,80,80,0.4); color: #ff6060; padding: 8px 18px; border-radius: 20px; font-family: var(--font-main); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display:inline-flex;align-items:center;gap:6px; }
+        .admin-btn-del:hover { background: rgba(255,80,80,0.25); border-color: #ff6060; }
+
         @media(max-width: 500px) {
             .do-dont-grid { grid-template-columns: 1fr !important; }
             .contact-btns.cols-2, .contact-btns.cols-3 { grid-template-columns: 1fr; }
@@ -440,6 +444,7 @@
             <button class="tab-btn" onclick="switchTab('tab-contact',this)"><i class="fas fa-phone"></i> ติดต่อ</button>
             <button class="tab-btn" onclick="switchTab('tab-footer',this)"><i class="fas fa-bookmark"></i> ส่วนท้าย</button>
             <button class="tab-btn" onclick="switchTab('tab-gs',this)"><i class="fab fa-google"></i> Google Sheets</button>
+            <button class="tab-btn" onclick="switchTab('tab-security',this)"><i class="fas fa-shield-alt"></i> ความปลอดภัย</button>
         </div>
 
         <!-- Tab: Header -->
@@ -636,6 +641,80 @@
                     <button class="admin-btn-add" onclick="loadFromGoogleSheets(true)">โหลดข้อมูล</button>
                     <span id="gs-status"></span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Tab: Security -->
+        <div id="tab-security" class="tab-content">
+            <div class="info-box" style="background:rgba(255,113,207,0.08);border-color:rgba(255,113,207,0.3);color:var(--accent);">
+                <i class="fas fa-lock"></i> การเปลี่ยน Username / Password จะมีผลทันที — กรุณาจำไว้ให้ดี
+            </div>
+
+            <!-- Current credentials display -->
+            <div class="admin-section" style="border-color:rgba(187,134,252,0.3);">
+                <div class="admin-section-title"><i class="fas fa-user-circle" style="color:var(--main);"></i> ข้อมูลผู้ดูแลปัจจุบัน</div>
+                <div style="display:flex;align-items:center;gap:12px;background:rgba(187,134,252,0.06);border:1px solid rgba(187,134,252,0.2);border-radius:12px;padding:14px 16px;margin-bottom:8px;">
+                    <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--main),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">👤</div>
+                    <div>
+                        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:2px;">Username ปัจจุบัน</div>
+                        <div id="current-username-display" style="font-size:1rem;font-weight:500;color:var(--main);">—</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;background:rgba(187,134,252,0.06);border:1px solid rgba(187,134,252,0.2);border-radius:12px;padding:14px 16px;">
+                    <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--main));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;">🔑</div>
+                    <div>
+                        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:2px;">Password</div>
+                        <div style="font-size:1rem;font-weight:500;color:var(--main);">••••••••</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change Username -->
+            <div class="admin-section">
+                <div class="admin-section-title"><i class="fas fa-user-edit" style="color:var(--main);"></i> เปลี่ยน Username</div>
+                <label style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;">Username ใหม่</label>
+                <input type="text" id="new-username" class="admin-input" placeholder="กรอก Username ใหม่" autocomplete="off">
+                <label style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;">ยืนยันด้วย Password ปัจจุบัน</label>
+                <div style="position:relative;">
+                    <input type="password" id="confirm-pass-for-user" class="admin-input" placeholder="Password ปัจจุบัน" autocomplete="off" style="padding-right:44px;">
+                    <button onclick="togglePassVis('confirm-pass-for-user','eye-u')" style="position:absolute;right:12px;top:50%;transform:translateY(-60%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:14px;"><i id="eye-u" class="fas fa-eye"></i></button>
+                </div>
+                <button onclick="changeUsername()" class="admin-btn-save" style="margin-top:4px;"><i class="fas fa-check"></i> บันทึก Username ใหม่</button>
+            </div>
+
+            <!-- Change Password -->
+            <div class="admin-section">
+                <div class="admin-section-title"><i class="fas fa-key" style="color:var(--main);"></i> เปลี่ยน Password</div>
+                <label style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;">Password ปัจจุบัน</label>
+                <div style="position:relative;">
+                    <input type="password" id="old-password" class="admin-input" placeholder="Password เดิม" autocomplete="current-password" style="padding-right:44px;">
+                    <button onclick="togglePassVis('old-password','eye-old')" style="position:absolute;right:12px;top:50%;transform:translateY(-60%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:14px;"><i id="eye-old" class="fas fa-eye"></i></button>
+                </div>
+                <label style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;">Password ใหม่ (อย่างน้อย 6 ตัวอักษร)</label>
+                <div style="position:relative;">
+                    <input type="password" id="new-password" class="admin-input" placeholder="Password ใหม่" autocomplete="new-password" style="padding-right:44px;" oninput="checkPassStrength(this.value)">
+                    <button onclick="togglePassVis('new-password','eye-new')" style="position:absolute;right:12px;top:50%;transform:translateY(-60%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:14px;"><i id="eye-new" class="fas fa-eye"></i></button>
+                </div>
+                <!-- Password strength bar -->
+                <div style="margin-bottom:10px;">
+                    <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+                        <div id="pass-strength-bar" style="height:100%;width:0%;border-radius:4px;transition:all 0.3s;"></div>
+                    </div>
+                    <div id="pass-strength-label" style="font-size:0.75rem;margin-top:4px;color:rgba(255,255,255,0.4);"></div>
+                </div>
+                <label style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;">ยืนยัน Password ใหม่</label>
+                <div style="position:relative;">
+                    <input type="password" id="confirm-new-password" class="admin-input" placeholder="ยืนยัน Password ใหม่" autocomplete="new-password" style="padding-right:44px;">
+                    <button onclick="togglePassVis('confirm-new-password','eye-cfm')" style="position:absolute;right:12px;top:50%;transform:translateY(-60%);background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:14px;"><i id="eye-cfm" class="fas fa-eye"></i></button>
+                </div>
+                <button onclick="changePassword()" class="admin-btn-save" style="margin-top:4px;"><i class="fas fa-shield-alt"></i> บันทึก Password ใหม่</button>
+            </div>
+
+            <!-- Danger zone: reset to default -->
+            <div class="admin-section" style="border-color:rgba(255,80,80,0.25);background:rgba(255,80,80,0.04);">
+                <div class="admin-section-title" style="color:#ff6060;"><i class="fas fa-exclamation-triangle"></i> Danger Zone</div>
+                <p style="font-size:0.83rem;color:rgba(255,255,255,0.5);margin-bottom:12px;">รีเซ็ต Username & Password กลับเป็นค่าเริ่มต้น (<b style="color:rgba(255,255,255,0.7);">admin / fumiko2026</b>)</p>
+                <button onclick="resetCreds()" class="admin-btn-del" style="padding:10px 20px;font-size:0.88rem;"><i class="fas fa-undo"></i> รีเซ็ตเป็นค่าเริ่มต้น</button>
             </div>
         </div>
     </div>
@@ -1280,9 +1359,120 @@ function switchTab(tabId,btn){
     document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     if(btn) btn.classList.add('active');
-    if(tabId==='tab-font')renderFontGrid();
-    if(tabId==='tab-contact')renderContactAdmin();
-    if(tabId==='tab-colors')fillColorAdmin(loadColors());
+    if(tabId==='tab-font') renderFontGrid();
+    if(tabId==='tab-contact') renderContactAdmin();
+    if(tabId==='tab-colors') fillColorAdmin(loadColors());
+    if(tabId==='tab-security') refreshSecurityTab();
+}
+
+// ===================== SECURITY — USERNAME / PASSWORD =====================
+function refreshSecurityTab(){
+    const creds = getCreds();
+    const el = document.getElementById('current-username-display');
+    if(el) el.textContent = creds.user;
+    // clear all fields
+    ['new-username','confirm-pass-for-user','old-password','new-password','confirm-new-password'].forEach(id=>{
+        const el = document.getElementById(id); if(el) el.value='';
+    });
+    // reset strength bar
+    const bar = document.getElementById('pass-strength-bar');
+    const label = document.getElementById('pass-strength-label');
+    if(bar){ bar.style.width='0%'; bar.style.background=''; }
+    if(label) label.textContent='';
+}
+
+function togglePassVis(inputId, iconId){
+    const inp = document.getElementById(inputId);
+    const ico = document.getElementById(iconId);
+    if(!inp) return;
+    if(inp.type==='password'){ inp.type='text'; if(ico){ ico.classList.remove('fa-eye'); ico.classList.add('fa-eye-slash'); } }
+    else { inp.type='password'; if(ico){ ico.classList.remove('fa-eye-slash'); ico.classList.add('fa-eye'); } }
+}
+
+function checkPassStrength(val){
+    const bar = document.getElementById('pass-strength-bar');
+    const label = document.getElementById('pass-strength-label');
+    if(!bar || !label) return;
+    if(!val){ bar.style.width='0%'; label.textContent=''; return; }
+    let score = 0;
+    if(val.length >= 6) score++;
+    if(val.length >= 10) score++;
+    if(/[A-Z]/.test(val)) score++;
+    if(/[0-9]/.test(val)) score++;
+    if(/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+        {pct:'20%', color:'#ff4444', text:'อ่อนมาก'},
+        {pct:'40%', color:'#ff8800', text:'อ่อน'},
+        {pct:'60%', color:'#ffcc00', text:'ปานกลาง'},
+        {pct:'80%', color:'#88cc00', text:'แข็งแรง'},
+        {pct:'100%',color:'#4cde80', text:'แข็งแรงมาก'}
+    ];
+    const lv = levels[Math.min(score-1, 4)] || levels[0];
+    bar.style.width = lv.pct;
+    bar.style.background = lv.color;
+    label.style.color = lv.color;
+    label.textContent = 'ความแข็งแรง: ' + lv.text;
+}
+
+function changeUsername(){
+    if(!isAdminLoggedIn){ showToast('⛔ กรุณา Login ก่อน','error'); return; }
+    const newUser = document.getElementById('new-username').value.trim();
+    const confirmPass = document.getElementById('confirm-pass-for-user').value.trim();
+    const creds = getCreds();
+
+    if(!newUser){ showToast('⚠️ กรุณากรอก Username ใหม่','warning'); return; }
+    if(newUser.length < 3){ showToast('⚠️ Username ต้องมีอย่างน้อย 3 ตัวอักษร','warning'); return; }
+    if(!confirmPass){ showToast('⚠️ กรุณายืนยัน Password ปัจจุบัน','warning'); return; }
+    if(confirmPass !== creds.pass){
+        showModal({icon:'error',title:'Password ไม่ถูกต้อง',html:'Password ปัจจุบันที่กรอกไม่ถูกต้อง กรุณาลองใหม่',confirmText:'ตกลง'});
+        document.getElementById('confirm-pass-for-user').value=''; return;
+    }
+    if(newUser === creds.user){ showToast('⚠️ Username ใหม่ต้องไม่ซ้ำกับของเดิม','warning'); return; }
+
+    showModal({icon:'question',title:'ยืนยันเปลี่ยน Username',html:`เปลี่ยนจาก <b style="color:var(--main);">${creds.user}</b> เป็น <b style="color:var(--accent);">${newUser}</b>?`,confirmText:'ยืนยัน',cancelText:'ยกเลิก'}).then(r=>{
+        if(!r.isConfirmed) return;
+        localStorage.setItem(ADMIN_CREDS_KEY, JSON.stringify({user: newUser, pass: creds.pass}));
+        refreshSecurityTab();
+        showToast('✅ เปลี่ยน Username เรียบร้อย — กรุณา Login ใหม่อีกครั้ง','success',3500);
+        setTimeout(()=>{ isAdminLoggedIn=false; closeAdmin(); },2000);
+    });
+}
+
+function changePassword(){
+    if(!isAdminLoggedIn){ showToast('⛔ กรุณา Login ก่อน','error'); return; }
+    const oldPass = document.getElementById('old-password').value;
+    const newPass = document.getElementById('new-password').value;
+    const confirmPass = document.getElementById('confirm-new-password').value;
+    const creds = getCreds();
+
+    if(!oldPass){ showToast('⚠️ กรุณากรอก Password ปัจจุบัน','warning'); return; }
+    if(oldPass !== creds.pass){
+        showModal({icon:'error',title:'Password ปัจจุบันไม่ถูกต้อง',html:'กรุณาตรวจสอบ Password เดิมของคุณ',confirmText:'ตกลง'});
+        document.getElementById('old-password').value=''; return;
+    }
+    if(!newPass || newPass.length < 6){ showToast('⚠️ Password ใหม่ต้องมีอย่างน้อย 6 ตัวอักษร','warning'); return; }
+    if(newPass !== confirmPass){
+        showModal({icon:'error',title:'Password ไม่ตรงกัน',html:'Password ใหม่และการยืนยัน Password ไม่ตรงกัน',confirmText:'ตกลง'});
+        document.getElementById('confirm-new-password').value=''; return;
+    }
+    if(newPass === oldPass){ showToast('⚠️ Password ใหม่ต้องไม่ซ้ำกับรหัสเดิม','warning'); return; }
+
+    showModal({icon:'question',title:'ยืนยันเปลี่ยน Password',html:'คุณต้องการเปลี่ยน Password ใหม่ใช่ไหม?<br><small style="color:rgba(255,255,255,0.5);">ระบบจะ Logout อัตโนมัติ เพื่อความปลอดภัย</small>',confirmText:'ยืนยัน',cancelText:'ยกเลิก'}).then(r=>{
+        if(!r.isConfirmed) return;
+        localStorage.setItem(ADMIN_CREDS_KEY, JSON.stringify({user: creds.user, pass: newPass}));
+        showToast('🔐 เปลี่ยน Password เรียบร้อย — กรุณา Login ใหม่','success',3500);
+        setTimeout(()=>{ isAdminLoggedIn=false; closeAdmin(); },2000);
+    });
+}
+
+function resetCreds(){
+    if(!isAdminLoggedIn){ showToast('⛔ กรุณา Login ก่อน','error'); return; }
+    showModal({icon:'warning',title:'รีเซ็ตข้อมูล Admin?',html:'จะรีเซ็ต Username และ Password กลับเป็น<br><b style="color:var(--main);">admin / fumiko2026</b><br><small style="color:rgba(255,255,255,0.4);">ระบบจะ Logout อัตโนมัติ</small>',confirmText:'รีเซ็ต',cancelText:'ยกเลิก',dangerConfirm:true}).then(r=>{
+        if(!r.isConfirmed) return;
+        localStorage.removeItem(ADMIN_CREDS_KEY);
+        showToast('↩️ รีเซ็ตเรียบร้อย — กรุณา Login ใหม่','info',3500);
+        setTimeout(()=>{ isAdminLoggedIn=false; closeAdmin(); },2000);
+    });
 }
 
 // ===================== EXPORT / IMPORT =====================
