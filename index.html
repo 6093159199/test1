@@ -4,12 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="https://img2.pic.in.th/pic/NEXO-SHOP-2-Photoroom.png" type="image/png"
-        sizes="16x16">
+    <link rel="shortcut icon" href="https://img2.pic.in.th/pic/NEXO-SHOP-2-Photoroom.png" type="image/png" sizes="16x16">
     <title>NEXO BIO V2</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Sarabun:wght@300;400;500&family=Kanit:wght@300;400;500;600&family=Prompt:wght@300;400;500;600&family=Charm:wght@400;700&family=Itim&family=Kodchasan:wght@300;400;500;600&family=Krub:wght@300;400;500;600&family=Mali:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&family=Noto+Serif+Thai:wght@300;400;500;600&family=Pridi:wght@300;400;500;600&family=Taviraj:wght@300;400;500;600&family=Trirong:wght@300;400;500;600&family=Srisakdi:wght@400;700&family=Bai+Jamjuree:wght@300;400;500;600&family=Chonburi&family=Athiti:wght@300;400;500;600&family=Fahkwang:wght@300;400;500;600&family=K2D:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Sarabun:wght@300;400;500&family=Kanit:wght@300;400;500;600&family=Prompt:wght@300;400;500;600&family=Charm:wght@400;700&family=Itim&family=Kodchasan:wght@300;400;500;600&family=Krub:wght@300;400;500;600&family=Mali:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&family=Noto+Serif+Thai:wght@300;400;500;600&family=Pridi:wght@300;400;500;600&family=Taviraj:wght@300;400;500;600&family=Trirong:wght@300;400;500;600&family=Srisakdi:wght@400;700&family=Bai+Jamjuree:wght@300;400;500;600&family=Chonburi&family=Athiti:wght@300;400;500;600&family=Fahkwang:wght@300;400;500;600&family=K2D:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
@@ -2123,13 +2120,13 @@
 
     <script>
         // ===================== CONFIG =====================
-        const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzkoYC6BgjnUAij7ZTRD2-wlOwi2Qxw0iX84f2ZcCBFdAOePYAdG8ySzrGmEHpZhfPZ/exec'; // ใส่ URL ของคุณ
-        const DATA_KEY = 'fumiko_data';
-        const COLOR_KEY = 'fumiko_colors';
-        const FONT_KEY = 'fumiko_font';
-        const GS_CONFIG_KEY = 'fumiko_gs_config';
-        const HISTORY_KEY = 'fumiko_history';
-        const ADMIN_CREDS_KEY = 'fumiko_admin_creds';
+            const GS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzkoYC6BgjnUAij7ZTRD2-wlOwi2Qxw0iX84f2ZcCBFdAOePYAdG8ySzrGmEHpZhfPZ/exec'; // ใส่ URL ของคุณ
+            const DATA_KEY = 'fumiko_data';
+            const COLOR_KEY = 'fumiko_colors';
+            const FONT_KEY = 'fumiko_font';
+            const GS_CONFIG_KEY = 'fumiko_gs_config';
+            const HISTORY_KEY = 'fumiko_history';
+            const ADMIN_CREDS_KEY = 'fumiko_admin_creds';
 
         // ===================== DEFAULT COLORS =====================
         const DEFAULT_COLORS = {
@@ -2317,177 +2314,177 @@
 
         // ===================== GOOGLE SHEETS =====================
         function getGsConfig() {
-            try {
-                const s = JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || '{}');
-                return { webAppUrl: GS_WEBAPP_URL || s.webAppUrl || '', sheetId: s.sheetId || '', apiKey: s.apiKey || '' };
-            } catch { return { webAppUrl: GS_WEBAPP_URL || '', sheetId: '', apiKey: '' }; }
-        }
+                try {
+                    const s = JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || '{}');
+                    return { webAppUrl: GS_WEBAPP_URL || s.webAppUrl || '', sheetId: s.sheetId || '', apiKey: s.apiKey || '' };
+                } catch { return { webAppUrl: GS_WEBAPP_URL || '', sheetId: '', apiKey: '' }; }
+            }
         function saveGsConfig() {
-            const c = {
-                webAppUrl: document.getElementById('gs-webapp-url').value.trim(),
-                sheetId: document.getElementById('gs-sheet-id').value.trim(),
-                apiKey: document.getElementById('gs-api-key').value.trim()
-            };
-            localStorage.setItem(GS_CONFIG_KEY, JSON.stringify(c));
-            showToast('✅ บันทึกการตั้งค่า Sheets');
-        }
+                const c = {
+                    webAppUrl: document.getElementById('gs-webapp-url').value.trim(),
+                    sheetId: document.getElementById('gs-sheet-id').value.trim(),
+                    apiKey: document.getElementById('gs-api-key').value.trim()
+                };
+                localStorage.setItem(GS_CONFIG_KEY, JSON.stringify(c));
+                showToast('✅ บันทึกการตั้งค่า Sheets');
+            }
         function fetchViaJsonp(url, ms) {
-            ms = ms || 10000;
-            return new Promise((res, rej) => {
-                const cb = 'jsonp_' + Math.round(1e6 * Math.random()) + '_' + Date.now();
-                let s = null, t = null;
-                function clean() { if (t) clearTimeout(t); if (window[cb]) delete window[cb]; if (s && s.parentNode) s.parentNode.removeChild(s); }
-                window[cb] = d => { clean(); res(d); };
-                t = setTimeout(() => { clean(); rej(new Error('timeout')); }, ms);
-                s = document.createElement('script');
-                s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
-                s.onerror = () => { clean(); rej(new Error('fail')); };
-                document.body.appendChild(s);
-            });
-        }
-        async function loadFromGoogleSheets(showUI) {
-            const cfg = getGsConfig(), url = cfg.webAppUrl;
-            if (!url) {
-                if (showUI) showModal({ icon: 'warning', title: 'ไม่ได้ตั้งค่า URL', html: 'กรุณาตั้งค่า Web App URL ใน tab Google Sheets', confirmText: 'ตกลง' });
-                return false;
-            }
-            if (showUI) showToast('<i class="fas fa-spinner spin"></i> กำลังโหลดจาก Sheets...', 'info', 10000);
-            try {
-                const r = await fetchViaJsonp(url.replace(/\/$/, '') + '?action=getData', 10000);
-                if (r && r.status === 'success' && r.data) {
-                    localStorage.setItem(DATA_KEY, JSON.stringify(r.data));
-                    if (showUI) {
-                        showToast('✅ โหลดข้อมูลสำเร็จ');
-                        renderSite();
-                        if (document.getElementById('admin-overlay').classList.contains('show')) openAdmin();
-                    }
-                    return true;
-                } else throw new Error('Invalid data format');
-            } catch (e) {
-                console.warn('GS fail:', e.message);
-                if (showUI) showModal({ icon: 'error', title: 'โหลดล้มเหลว', html: 'ไม่สามารถเชื่อมต่อ Google Sheets ได้<br><small>กรุณาตรวจสอบ URL และการ Deploy</small>', confirmText: 'ตกลง' });
-                return false;
-            }
-        }
-        async function saveToGoogleSheets(data) {
-            const cfg = getGsConfig();
-            if (!cfg.webAppUrl) return false;
-            try {
-                await fetch(cfg.webAppUrl, {
-                    method: 'POST', mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'updateData', data })
+                ms = ms || 10000;
+                return new Promise((res, rej) => {
+                    const cb = 'jsonp_' + Math.round(1e6 * Math.random()) + '_' + Date.now();
+                    let s = null, t = null;
+                    function clean() { if (t) clearTimeout(t); if (window[cb]) delete window[cb]; if (s && s.parentNode) s.parentNode.removeChild(s); }
+                    window[cb] = d => { clean(); res(d); };
+                    t = setTimeout(() => { clean(); rej(new Error('timeout')); }, ms);
+                    s = document.createElement('script');
+                    s.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+                    s.onerror = () => { clean(); rej(new Error('fail')); };
+                    document.body.appendChild(s);
                 });
-                return true;
-            } catch { return false; }
-        }
-        async function testGsConnection() {
-            const s = document.getElementById('gs-status');
-            s.style.display = 'inline-flex'; s.className = 'gs-loading';
-            s.innerHTML = '<i class="fas fa-spinner spin"></i> ทดสอบ...';
-            const url = document.getElementById('gs-webapp-url').value.trim();
-            if (!url) { s.className = 'gs-err'; s.innerHTML = '<i class="fas fa-times-circle"></i> กรุณากรอก URL'; return; }
-            try {
-                await fetchViaJsonp(url.replace(/\/$/, '') + '?action=ping', 5000);
-                s.className = 'gs-ok'; s.innerHTML = '<i class="fas fa-check-circle"></i> เชื่อมต่อสำเร็จ';
-            } catch {
-                s.className = 'gs-err'; s.innerHTML = '<i class="fas fa-exclamation-triangle"></i> เชื่อมต่อไม่ได้';
             }
-        }
+        async function loadFromGoogleSheets(showUI) {
+                const cfg = getGsConfig(), url = cfg.webAppUrl;
+                if (!url) {
+                    if (showUI) showModal({ icon: 'warning', title: 'ไม่ได้ตั้งค่า URL', html: 'กรุณาตั้งค่า Web App URL ใน tab Google Sheets', confirmText: 'ตกลง' });
+                    return false;
+                }
+                if (showUI) showToast('<i class="fas fa-spinner spin"></i> กำลังโหลดจาก Sheets...', 'info', 10000);
+                try {
+                    const r = await fetchViaJsonp(url.replace(/\/$/, '') + '?action=getData', 10000);
+                    if (r && r.status === 'success' && r.data) {
+                        localStorage.setItem(DATA_KEY, JSON.stringify(r.data));
+                        if (showUI) {
+                            showToast('✅ โหลดข้อมูลสำเร็จ');
+                            renderSite();
+                            if (document.getElementById('admin-overlay').classList.contains('show')) openAdmin();
+                        }
+                        return true;
+                    } else throw new Error('Invalid data format');
+                } catch (e) {
+                    console.warn('GS fail:', e.message);
+                    if (showUI) showModal({ icon: 'error', title: 'โหลดล้มเหลว', html: 'ไม่สามารถเชื่อมต่อ Google Sheets ได้<br><small>กรุณาตรวจสอบ URL และการ Deploy</small>', confirmText: 'ตกลง' });
+                    return false;
+                }
+            }
+        async function saveToGoogleSheets(data) {
+                const cfg = getGsConfig();
+                if (!cfg.webAppUrl) return false;
+                try {
+                    await fetch(cfg.webAppUrl, {
+                        method: 'POST', mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'updateData', data })
+                    });
+                    return true;
+                } catch { return false; }
+            }
+        async function testGsConnection() {
+                const s = document.getElementById('gs-status');
+                s.style.display = 'inline-flex'; s.className = 'gs-loading';
+                s.innerHTML = '<i class="fas fa-spinner spin"></i> ทดสอบ...';
+                const url = document.getElementById('gs-webapp-url').value.trim();
+                if (!url) { s.className = 'gs-err'; s.innerHTML = '<i class="fas fa-times-circle"></i> กรุณากรอก URL'; return; }
+                try {
+                    await fetchViaJsonp(url.replace(/\/$/, '') + '?action=ping', 5000);
+                    s.className = 'gs-ok'; s.innerHTML = '<i class="fas fa-check-circle"></i> เชื่อมต่อสำเร็จ';
+                } catch {
+                    s.className = 'gs-err'; s.innerHTML = '<i class="fas fa-exclamation-triangle"></i> เชื่อมต่อไม่ได้';
+                }
+            }
 
         // ===================== INITIAL DATA =====================
         function getInitialData() {
-            return {
-                header: {
-                    logoImg: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150351.jpeg',
-                    shopName: 'NEXO BIO V2',
-                    shopDesc: '###',
-                    statusText: 'สถานะของร้าน',
-                    badges: ['###'],
-                    queueText: 'เช็คคิวงาน ✨',
-                    queueLink: '#',
-                    detailTitle: 'ตัวอย่าง',
-                    detailImg: 'https://img2.pic.in.th/a359dd21-5107-4d71-8353-eab0b7fd25d0.jpg'
-                },
-                bgEmojis: [
-                    { emoji: '✨', left: '10%', delay: 0 }, { emoji: '🪐', left: '30%', delay: 4 },
-                    { emoji: '💫', left: '55%', delay: 8 }, { emoji: '🧸', left: '75%', delay: 2 }, { emoji: '🌸', left: '90%', delay: 6 }
-                ],
-                sections: [
-                    {
-                        type: 'portfolio', title: 'ผลงานของร้าน', headerIndex: -1,
-                        items: [
-                            { img: 'https://img2.pic.in.th/a359dd21-5107-4d71-8353-eab0b7fd25d0.jpg', label: 'test1', link: '#' },
-                            { img: 'https://img2.pic.in.th/fdfdba13-2628-432a-bc03-477b8d2f5e63.jpg', label: 'test2', link: '#' }
-                        ],
-                        mainBtnText: 'สั่งงานคลิกเลย', mainBtnLink: '#'
-                    }
-                ],
-                groupsHeaders: [{ deco: '✦ ✦ ✦', title: 'หัวข้อใหม่', sub: 'คำอธิบาย', deco2: 'ข้อความท้าย' }],
-                groupSections: [{
-                    headerIndex: 0, title: 'หัวข้อใหม่', groups: [
-                        { name: 'test1', price: '', tags: ['Collab'], note: '', links: [{ text: '🔗 ดูรายละเอียด', url: '#' }], img: 'https://img2.pic.in.th/a359dd21-5107-4d71-8353-eab0b7fd25d0.jpg' },
-                        { name: 'test2', price: '', tags: ['Collab'], note: '', links: [{ text: '🔗 ดูรายละเอียด', url: '#' }], img: 'https://img2.pic.in.th/fdfdba13-2628-432a-bc03-477b8d2f5e63.jpg' }
-                    ]
-                }],
-                allGroupsSections: [],
-                contact: {
-                    buttons: [
-                        { icon: '📘', text: 'Facebook', link: '#', style: 'fb' },
-                        { icon: '💬', text: 'Line', link: '#', style: 'line' }
+                return {
+                    header: {
+                        logoImg: 'https://julie-vwb.github.io/fumiko-poko/line_oa_chat_260308_150351.jpeg',
+                        shopName: 'NEXO BIO V2',
+                        shopDesc: '###',
+                        statusText: 'สถานะของร้าน',
+                        badges: ['###'],
+                        queueText: 'เช็คคิวงาน ✨',
+                        queueLink: '#',
+                        detailTitle: 'ตัวอย่าง',
+                        detailImg: 'https://img2.pic.in.th/a359dd21-5107-4d71-8353-eab0b7fd25d0.jpg'
+                    },
+                    bgEmojis: [
+                        { emoji: '✨', left: '10%', delay: 0 }, { emoji: '🪐', left: '30%', delay: 4 },
+                        { emoji: '💫', left: '55%', delay: 8 }, { emoji: '🧸', left: '75%', delay: 2 }, { emoji: '🌸', left: '90%', delay: 6 }
                     ],
-                    note: 'รายละเอียดเพิ่มเติมถ้ามี'
-                },
-                footer: { name: 'NEXO ✦', text: '' }
-            };
-        }
+                    sections: [
+                        {
+                            type: 'portfolio', title: 'ผลงานของร้าน', headerIndex: -1,
+                            items: [
+                                { img: 'https://img2.pic.in.th/a359dd21-5107-4d71-8353-eab0b7fd25d0.jpg', label: 'test1', link: '#' },
+                                { img: 'https://img2.pic.in.th/fdfdba13-2628-432a-bc03-477b8d2f5e63.jpg', label: 'test2', link: '#' }
+                            ],
+                            mainBtnText: 'สั่งงานคลิกเลย', mainBtnLink: '#'
+                        }
+                    ],
+                    groupsHeaders: [{ deco: '✦ ✦ ✦', title: 'หัวข้อใหม่', sub: 'คำอธิบาย', deco2: 'ข้อความท้าย' }],
+                    groupSections: [{
+                        headerIndex: 0, title: 'หัวข้อใหม่', groups: [
+                            { name: 'test1', price: '', tags: ['Collab'], note: '', links: [{ text: '🔗 ดูรายละเอียด', url: '#' }], img: 'https://img2.pic.in.th/a359dd21-5107-4d71-8353-eab0b7fd25d0.jpg' },
+                            { name: 'test2', price: '', tags: ['Collab'], note: '', links: [{ text: '🔗 ดูรายละเอียด', url: '#' }], img: 'https://img2.pic.in.th/fdfdba13-2628-432a-bc03-477b8d2f5e63.jpg' }
+                        ]
+                    }],
+                    allGroupsSections: [],
+                    contact: {
+                        buttons: [
+                            { icon: '📘', text: 'Facebook', link: '#', style: 'fb' },
+                            { icon: '💬', text: 'Line', link: '#', style: 'line' }
+                        ],
+                        note: 'รายละเอียดเพิ่มเติมถ้ามี'
+                    },
+                    footer: { name: 'NEXO ✦', text: '' }
+                };
+            }
         function loadData() {
-            try {
-                const r = localStorage.getItem(DATA_KEY);
-                if (!r) return getInitialData();
-                const p = JSON.parse(r), d = getInitialData();
-                // compat: ตรวจสอบ headerIndex
-                if (p.sections) p.sections = p.sections.map(s => ({
-                    ...s, headerIndex: s.headerIndex !== undefined ? s.headerIndex : -1
-                }));
-                return { ...d, ...p };
-            } catch { return getInitialData(); }
-        }
+                try {
+                    const r = localStorage.getItem(DATA_KEY);
+                    if (!r) return getInitialData();
+                    const p = JSON.parse(r), d = getInitialData();
+                    // compat: ตรวจสอบ headerIndex
+                    if (p.sections) p.sections = p.sections.map(s => ({
+                        ...s, headerIndex: s.headerIndex !== undefined ? s.headerIndex : -1
+                    }));
+                    return { ...d, ...p };
+                } catch { return getInitialData(); }
+            }
         async function saveData(data, notify, addHist) {
-            if (notify === undefined) notify = true;
-            if (addHist === undefined) addHist = true;
-            try {
-                localStorage.setItem(DATA_KEY, JSON.stringify(data));
-                if (addHist) addToHistory(data);
-                saveToGoogleSheets(data); // fire-and-forget
-                if (notify) showToast('✅ บันทึกเรียบร้อย');
-                renderSite();
-                return true;
-            } catch { return false; }
-        }
+                if (notify === undefined) notify = true;
+                if (addHist === undefined) addHist = true;
+                try {
+                    localStorage.setItem(DATA_KEY, JSON.stringify(data));
+                    if (addHist) addToHistory(data);
+                    saveToGoogleSheets(data); // fire-and-forget
+                    if (notify) showToast('✅ บันทึกเรียบร้อย');
+                    renderSite();
+                    return true;
+                } catch { return false; }
+            }
         function addToHistory(data) {
-            try {
-                const h = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-                h.unshift({ timestamp: new Date().toISOString(), data: JSON.parse(JSON.stringify(data)) });
-                if (h.length > 20) h.pop();
-                localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
-            } catch { }
-        }
+                try {
+                    const h = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+                    h.unshift({ timestamp: new Date().toISOString(), data: JSON.parse(JSON.stringify(data)) });
+                    if (h.length > 20) h.pop();
+                    localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+                } catch { }
+            }
         function showHistory() {
-            const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-            if (!history.length) { showModal({ icon: 'info', title: 'ไม่มีประวัติ', html: 'ยังไม่มีประวัติการบันทึก', confirmText: 'ตกลง' }); return; }
-            let html = '<div style="max-height:300px;overflow-y:auto;">';
-            history.forEach((item, i) => {
-                const date = new Date(item.timestamp).toLocaleString('th-TH');
-                html += `<div class="history-item" onclick="restoreHistory(${i});closeModal()"><div><i class="fas fa-clock"></i> ${date}</div><i class="fas fa-undo"></i></div>`;
-            });
-            html += '</div>';
-            showModal({ icon: '', title: '📜 ประวัติการบันทึก', html, confirmText: 'ปิด' });
-        }
+                const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+                if (!history.length) { showModal({ icon: 'info', title: 'ไม่มีประวัติ', html: 'ยังไม่มีประวัติการบันทึก', confirmText: 'ตกลง' }); return; }
+                let html = '<div style="max-height:300px;overflow-y:auto;">';
+                history.forEach((item, i) => {
+                    const date = new Date(item.timestamp).toLocaleString('th-TH');
+                    html += `<div class="history-item" onclick="restoreHistory(${i});closeModal()"><div><i class="fas fa-clock"></i> ${date}</div><i class="fas fa-undo"></i></div>`;
+                });
+                html += '</div>';
+                showModal({ icon: '', title: '📜 ประวัติการบันทึก', html, confirmText: 'ปิด' });
+            }
         function restoreHistory(i) {
-            const h = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
-            if (h[i]) { saveData(h[i].data, true, false); showToast('✅ กู้คืนสำเร็จ'); }
-        }
+                const h = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+                if (h[i]) { saveData(h[i].data, true, false); showToast('✅ กู้คืนสำเร็จ'); }
+            }
 
         // ===================== RENDER SITE =====================
         function renderBgEmojis(emojis) {
@@ -2813,10 +2810,7 @@
         function saveFooter() { const d = loadData(); d.footer.name = document.getElementById('a-footer-name').value; d.footer.text = document.getElementById('a-footer-text').value; saveData(d, true, true); showToast('✅ บันทึกส่วนท้ายแล้ว'); }
 
         // ===================== ADMIN OPEN/CLOSE =====================
-        function getCreds() {
-            try { return JSON.parse(localStorage.getItem(ADMIN_CREDS_KEY)) || { user: 'admin', pass: 'admin123' }; }
-            catch { return { user: 'admin', pass: 'admin123' }; }
-        }
+        function getCreds() { try { return JSON.parse(localStorage.getItem(ADMIN_CREDS_KEY)) || { user: 'admin', pass: 'fumiko2026' }; } catch { return { user: 'admin', pass: 'fumiko2026' }; } }
         function openAdmin() {
             if (!isAdminLoggedIn) { document.getElementById('login-overlay').classList.add('show'); setTimeout(() => document.getElementById('login-user').focus(), 100); return; }
             const d = loadData();
@@ -2976,34 +2970,34 @@
         function syncWithGoogleSheets() { showModal({ icon: 'question', title: 'Sync Google Sheets', html: 'เลือกทิศทาง', confirmText: '📤 อัปโหลด', cancelText: '📥 ดาวน์โหลด' }).then(r => { if (r.isConfirmed) saveToGoogleSheets(loadData()).then(() => showToast('✅ อัปโหลดแล้ว')); else if (r.dismiss === 'cancel') loadFromGoogleSheets(true); }); }
 
         // ===================== SYNC HELPER =====================
-        function syncWithGoogleSheets() {
-            showModal({
-                icon: 'question', title: 'Sync Google Sheets', html: 'เลือกทิศทาง',
-                confirmText: '📤 อัปโหลด', cancelText: '📥 ดาวน์โหลด'
-            }).then(r => {
-                if (r.isConfirmed) saveToGoogleSheets(loadData()).then(() => showToast('✅ อัปโหลดแล้ว'));
-                else if (r.dismiss === 'cancel') loadFromGoogleSheets(true);
-            });
-        }
-
-        // ===================== INIT =====================
-        async function initApp() {
-            applyFont(selectedFont);
-            applyColors(loadColors());
-
-            const gsUrl = GS_WEBAPP_URL || (() => {
-                try { return JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || '{}').webAppUrl || ''; } catch { return ''; }
-            })();
-
-            if (gsUrl) {
-                const ok = await loadFromGoogleSheets(false);
-                if (ok) console.log('✅ Loaded from Google Sheets');
-                else console.warn('⚠️ Using cached/default data');
+            function syncWithGoogleSheets() {
+                showModal({
+                    icon: 'question', title: 'Sync Google Sheets', html: 'เลือกทิศทาง',
+                    confirmText: '📤 อัปโหลด', cancelText: '📥 ดาวน์โหลด'
+                }).then(r => {
+                    if (r.isConfirmed) saveToGoogleSheets(loadData()).then(() => showToast('✅ อัปโหลดแล้ว'));
+                    else if (r.dismiss === 'cancel') loadFromGoogleSheets(true);
+                });
             }
 
-            renderSite();
-            document.getElementById('loading-overlay').classList.add('hidden');
-        }
+        // ===================== INIT =====================
+            async function initApp() {
+                applyFont(selectedFont);
+                applyColors(loadColors());
+
+                const gsUrl = GS_WEBAPP_URL || (() => {
+                    try { return JSON.parse(localStorage.getItem(GS_CONFIG_KEY) || '{}').webAppUrl || ''; } catch { return ''; }
+                })();
+
+                if (gsUrl) {
+                    const ok = await loadFromGoogleSheets(false);
+                    if (ok) console.log('✅ Loaded from Google Sheets');
+                    else console.warn('⚠️ Using cached/default data');
+                }
+
+                renderSite();
+                document.getElementById('loading-overlay').classList.add('hidden');
+            }
 
         // Event Listeners
         document.getElementById('admin-fab').addEventListener('click', openAdmin);
@@ -3018,5 +3012,3 @@
 </body>
 
 </html>
-
-
